@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\;
 use App\Models\Refund;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,7 +14,7 @@ class RefundItemFactory extends Factory
     {
         return [
             'refund_id' => Refund::factory(),
-            'order_item_id' => ::factory(),
+            'order_item_id' => fake()->numberBetween(1, 1000),
             'qty' => fake()->randomFloat(6, 0, 999999999999.999999),
             'amount' => fake()->randomFloat(2, 0, 9999999999999999.99),
         ];

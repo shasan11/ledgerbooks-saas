@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\;
 use App\Models\SupplierPayment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,7 +14,7 @@ class SupplierPaymentLineFactory extends Factory
     {
         return [
             'supplier_payment_id' => SupplierPayment::factory(),
-            'purchase_bill_id' => ::factory(),
+            'purchase_bill_id' => fake()->numberBetween(1, 1000),
             'allocated_amount' => fake()->randomFloat(2, 0, 9999999999999999.99),
             'note' => fake()->regexify('[A-Za-z0-9]{255}'),
         ];

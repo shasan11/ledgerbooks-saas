@@ -12,7 +12,7 @@ class CouponFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
             'code' => fake()->regexify('[A-Za-z0-9]{40}'),
             'name' => fake()->name(),
             'discount_type' => fake()->randomElement(["percent","fixed"]),
@@ -22,7 +22,7 @@ class CouponFactory extends Factory
             'max_uses_per_customer' => fake()->numberBetween(-10000, 10000),
             'valid_from' => fake()->dateTime(),
             'valid_to' => fake()->dateTime(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
         ];

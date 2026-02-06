@@ -15,7 +15,7 @@ class ProductionOutputFactory extends Factory
     {
         return [
             'production_order_id' => ProductionOrder::factory(),
-            'finished_good_variant_id' => fake()->word(),
+            'finished_good_variant_id' => fake()->numberBetween(1, 1000),
             'qty_produced' => fake()->randomFloat(6, 0, 999999999999.999999),
             'product_variant_id' => ProductVariant::factory(),
         ];

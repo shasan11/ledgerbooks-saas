@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        if (filter_var(env('SET_DUMMY', false), FILTER_VALIDATE_BOOLEAN)) {
+            User::factory()->count(10)->create();
+        }
     }
 }

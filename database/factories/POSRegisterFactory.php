@@ -14,12 +14,12 @@ class POSRegisterFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
             'code' => fake()->regexify('[A-Za-z0-9]{40}'),
             'name' => fake()->name(),
             'warehouse_id' => Warehouse::factory(),
-            'cash_account_id' => fake()->word(),
-            'user_add_id' => fake()->word(),
+            'cash_account_id' => fake()->numberBetween(1, 1000),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'bank_account_id' => BankAccount::factory(),

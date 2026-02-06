@@ -15,7 +15,7 @@ class TaxClassFactory extends Factory
             'name' => fake()->name(),
             'code' => fake()->regexify('[A-Za-z0-9]{30}'),
             'description' => fake()->text(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
         ];
