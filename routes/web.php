@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/branches', [BranchController::class, 'store'])->name('branches.store');
     Route::put('/branches/{branch}', [BranchController::class, 'update'])->name('branches.update');
     Route::delete('/branches/{branch}', [BranchController::class, 'destroy'])->name('branches.destroy');
+    Route::post('/branches/bulk', [BranchController::class, 'bulk'])->name('branches.bulk');
 
     // Bulk
    Route::get('/product-categories', [ProductCategoryController::class, 'index'])
