@@ -61,7 +61,6 @@ export default function Index() {
           { title: "Subject", dataIndex: "subject", sorter: true, field: "subject" },
           { title: "Type", dataIndex: "type", sorter: true, field: "type" },
           { title: "Status", dataIndex: "status", sorter: true, field: "status" },
-          { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
         ]}
         fields={[
           { type: "select", name: "type", label: "Type", options: typeOptions, required: true, col: 12 },
@@ -73,7 +72,6 @@ export default function Index() {
           { type: "select", name: "status", label: "Status", options: statusOptions, col: 12 },
           { type: "select", name: "assigned_to_id", label: "Assigned To", options: userOptions, col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
-          { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
         validationSchema={Yup.object({
           type: Yup.string().required("Required"),
@@ -89,7 +87,6 @@ export default function Index() {
           status: "pending",
           assigned_to_id: null,
           description: "",
-          active: true,
         }}
         enableInactiveDrawer={true}
         form_ui="modal"

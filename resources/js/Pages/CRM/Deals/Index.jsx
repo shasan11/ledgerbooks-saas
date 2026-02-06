@@ -46,7 +46,6 @@ export default function Index() {
           { title: "Title", dataIndex: "title", sorter: true, field: "title" },
           { title: "Stage", dataIndex: "stage", sorter: true, field: "stage" },
           { title: "Contact ID", dataIndex: "contact_id" },
-          { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
         ]}
         fields={[
           { type: "text", name: "title", label: "Title", required: true, col: 12 },
@@ -66,7 +65,6 @@ export default function Index() {
           { type: "text", name: "source", label: "Source", col: 12 },
           { type: "select", name: "owner_id", label: "Owner", options: ownerOptions, col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
-          { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
         validationSchema={Yup.object({
           title: Yup.string().required("Required"),
@@ -83,7 +81,6 @@ export default function Index() {
           source: "",
           owner_id: null,
           description: "",
-          active: true,
         }}
         enableInactiveDrawer={true}
         form_ui="modal"

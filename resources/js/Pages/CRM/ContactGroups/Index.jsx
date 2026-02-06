@@ -34,10 +34,7 @@ export default function Index() {
         destroyUrl={(id) => `/crm/contact-groups/${id}`}
         bulkUrl="/crm/contact-groups/bulk"
         title="Contact Groups"
-        columns={[
-          { title: "Name", dataIndex: "name", sorter: true, field: "name" },
-          { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
-        ]}
+        columns={[{ title: "Name", dataIndex: "name", sorter: true, field: "name" }]}
         fields={[
           { type: "text", name: "name", label: "Name", required: true, col: 24 },
           {
@@ -55,7 +52,6 @@ export default function Index() {
             col: 12,
           },
           { type: "textarea", name: "description", label: "Description", col: 24 },
-          { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),
@@ -65,7 +61,6 @@ export default function Index() {
           parent_id: "",
           contact_group_id: null,
           description: "",
-          active: true,
         }}
         enableInactiveDrawer={true}
         form_ui="modal"
