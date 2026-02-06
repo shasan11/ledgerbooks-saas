@@ -34,6 +34,15 @@ export default function Index() {
     [chartOfAccounts]
   );
 
+  const anchorFilters = useMemo(
+    () => [
+      { key: "all", label: "All COA", title: "Chart of Accounts", params: {} },
+      { key: "user", label: "User Created", title: "User Created COA", params: { origin: "user" } },
+      { key: "system", label: "System Generated", title: "System Generated COA", params: { origin: "system" } },
+    ],
+    []
+  );
+
   return (
     <AuthenticatedLayout>
       <ReusableCrudInertia
@@ -47,6 +56,8 @@ export default function Index() {
           { title: "Name", dataIndex: "name", sorter: true, field: "name" },
           { title: "Code", dataIndex: "code", sorter: true, field: "code" },
         ]}
+        anchorFilters={anchorFilters}
+        defaultAnchorKey="all"
         fields={[
           { type: "text", name: "name", label: "Name", required: true, col: 12 },
           { type: "text", name: "code", label: "Code", required: true, col: 12 },
@@ -66,8 +77,6 @@ export default function Index() {
             col: 12,
           },
           { type: "select", name: "c_o_a_id", label: "COA", options: chartIdOptions, col: 12 },
-          { type: "checkbox", name: "is_group", label: "Is Group", col: 12 },
-          { type: "checkbox", name: "is_system", label: "Is System", col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
         ]}
         validationSchema={Yup.object({
@@ -81,8 +90,6 @@ export default function Index() {
           account_type_id: null,
           parent_id: "",
           c_o_a_id: null,
-          is_group: false,
-          is_system: false,
           description: "",
         }}
         enableInactiveDrawer={true}
