@@ -1,4 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+// src/components/ReusableCrudInertia.jsx
+// ✅ Inertia + AntD v5 Reusable CRUD (Server pagination via Laravel paginator / controller props)
+// ✅ Anchor filter tabs synced with URL hash
+// ✅ Inactive records drawer (server-provided inactiveItems)
+// ✅ Import/Export (Export current page, Import via bulkUrl)
+// ✅ Row height toggle (compact/normal/roomy) + Rocket drawer (Quick Tools)
+// ✅ Keeps the same flat/minimal styling you showed (borderRadius: 2, fontWeight: 600)
+
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import {
   Table,
@@ -31,6 +39,9 @@ import {
   MoreOutlined,
   ReloadOutlined,
   EllipsisOutlined,
+  ColumnHeightOutlined,
+  RocketOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { Formik, Form as FormikForm, Field, FieldArray } from "formik";
 import * as XLSX from "xlsx";
@@ -107,16 +118,16 @@ function AnchorFilterTabs({ items = [], activeKey, onChange, leftTitle, rightNod
 
   return (
     <div
+      className="px-3"
       style={{
         display: "flex",
         alignItems: "center",
         gap: 18,
-        padding: "12px 16px",
         borderBottom: "1px solid #eef0f4",
         background: "#fff",
       }}
     >
-      <div style={{ fontSize: 22, fontWeight: 800, color: "#0f172a" }}>
+      <div style={{ fontSize: 22, fontWeight: 600, color: "#0f172a" }}>
         {activeItem?.title || leftTitle || ""}
       </div>
 
@@ -135,7 +146,7 @@ function AnchorFilterTabs({ items = [], activeKey, onChange, leftTitle, rightNod
                 padding: "12px 4px",
                 cursor: "pointer",
                 fontSize: 16,
-                fontWeight: isActive ? 800 : 500,
+                fontWeight: isActive ? 600 : 400,
                 color: isActive ? "#0f172a" : "#64748b",
                 position: "relative",
               }}
@@ -218,10 +229,10 @@ function CrudFormInner({
  * - You DO NOT pass apiUrl (like DRF). You pass:
  *   - indexUrl: where the list comes from (controller returns Inertia props)
  *   - storeUrl, updateUrl(id), destroyUrl(id)
- *   - bulkUrl (optional) for bulk ops
+ *   - bulkUrl (optional) for bulk ops/import
  * - Props from controller:
  *   - items: paginator object for ACTIVE view
- *   - inactiveItems: paginator object for INACTIVE view (optional)
+ *   - inactiveItems: paginator object for INACTIVE view (optional; only returned when inactive_drawer=1)
  *   - query: current query (page, per_page, search, etc.)
  */
 export default function ReusableCrudInertia({
@@ -237,7 +248,7 @@ export default function ReusableCrudInertia({
   columns,
   validationSchema,
 
-  // same props as your DRF component (kept)
+  // actions
   bulkactions = [],
   singleactions = [],
   ui_type,
@@ -279,7 +290,7 @@ export default function ReusableCrudInertia({
   // server sorting
   sortParam = "sort",
   dirParam = "dir",
-}){
+}) {
   const { props } = usePage();
   const items = props.items; // paginator for active list
   const inactiveItems = props.inactiveItems; // paginator for inactive drawer (optional)
@@ -287,11 +298,37 @@ export default function ReusableCrudInertia({
 
   const [visible, setVisible] = useState(false);
   const [inactiveDrawer, setInactiveDrawer] = useState(false);
+  const [rocketDrawerOpen, setRocketDrawerOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const [searchText, setSearchText] = useState(query?.[searchParam] ?? "");
   const [inactiveSearchText, setInactiveSearchText] = useState("");
+
+  // Row density
+  const [rowDensity, setRowDensity] = useState("normal"); // compact | normal | roomy
+
+  const densityStyle = useMemo(
+    () => (
+      <style>{`
+        .rc-row-compact td { padding-top: 6px !important; padding-bottom: 6px !important; }
+        .rc-row-normal td { padding-top: 12px !important; padding-bottom: 12px !important; }
+        .rc-row-roomy td { padding-top: 18px !important; padding-bottom: 18px !important; }
+      `}</style>
+    ),
+    []
+  );
+
+  const rowClassName = useCallback(() => {
+    if (rowDensity === "compact") return "rc-row-compact";
+    if (rowDensity === "roomy") return "rc-row-roomy";
+    return "rc-row-normal";
+  }, [rowDensity]);
+
+  const rowDensityMenuItems = useMemo(() => {
+    const mk = (key, label) => ({ key, label, onClick: () => setRowDensity(key) });
+    return [mk("compact", "Compact"), mk("normal", "Normal"), mk("roomy", "Roomy")];
+  }, []);
 
   // Anchor state
   const hasAnchors = Array.isArray(anchorFilters) && anchorFilters.length > 0;
@@ -337,18 +374,23 @@ export default function ReusableCrudInertia({
   const currentRows = items?.data || [];
   const inactiveRows = inactiveItems?.data || [];
 
-  // Use server paginated always (paginator)
-  const pagination = useMemo(() => ({
-    current: toInt(items?.current_page, 1),
-    pageSize: toInt(items?.per_page, 20),
-    total: toInt(items?.total, 0),
-  }), [items]);
+  const pagination = useMemo(
+    () => ({
+      current: toInt(items?.current_page, 1),
+      pageSize: toInt(items?.per_page, 20),
+      total: toInt(items?.total, 0),
+    }),
+    [items]
+  );
 
-  const inactivePagination = useMemo(() => ({
-    current: toInt(inactiveItems?.current_page, 1),
-    pageSize: toInt(inactiveItems?.per_page, 10),
-    total: toInt(inactiveItems?.total, 0),
-  }), [inactiveItems]);
+  const inactivePagination = useMemo(
+    () => ({
+      current: toInt(inactiveItems?.current_page, 1),
+      pageSize: toInt(inactiveItems?.per_page, 10),
+      total: toInt(inactiveItems?.total, 0),
+    }),
+    [inactiveItems]
+  );
 
   const visit = (nextQuery) => {
     router.get(indexUrl, stripEmpty(nextQuery), {
@@ -368,20 +410,18 @@ export default function ReusableCrudInertia({
   };
 
   const refetchInactive = (overrides = {}) => {
-    // Same index route, but request inactive list props
     visit({
       ...query,
       ...anchorParams,
       ...overrides,
-      inactive_drawer: 1, // tells controller to also return inactiveItems
-      [activeParam]: 1, // keep active list stable
+      inactive_drawer: 1,
+      [activeParam]: 1,
       inactive_search: overrides.inactive_search ?? inactiveSearchText,
       inactive_page: overrides.inactive_page ?? inactivePagination.current,
       inactive_per_page: overrides.inactive_per_page ?? inactivePagination.pageSize,
     });
   };
 
-  // anchor change => reset pages
   const changeAnchor = (key) => {
     setActiveAnchorKey(key);
     if (anchorSyncWithHash) safeHashSet(key);
@@ -389,9 +429,11 @@ export default function ReusableCrudInertia({
 
     if (typeof onAnchorChange === "function") onAnchorChange(key);
 
+    const item = anchorFilters.find((x) => x.key === key);
+    const params = item?.params || {};
     visit({
       ...query,
-      ...((anchorFilters.find((x) => x.key === key)?.params) || {}),
+      ...params,
       [pageParam]: 1,
       [activeParam]: 1,
     });
@@ -623,14 +665,11 @@ export default function ReusableCrudInertia({
         arr.push({
           key: "inactive",
           icon: <EyeInvisibleOutlined />,
-          label: `View Inactive (${inactivePagination.total})`,
+          label: `View Inactive (${inactivePagination.total || 0})`,
           onClick: () => {
             const next = !inactiveDrawer;
             setInactiveDrawer(next);
-            if (next) {
-              // tell server to include inactiveItems
-              refetchInactive({ inactive_drawer: 1, inactive_page: 1 });
-            }
+            if (next) refetchInactive({ inactive_drawer: 1, inactive_page: 1 });
           },
         });
       }
@@ -656,7 +695,6 @@ export default function ReusableCrudInertia({
       );
     }
 
-    // custom menu items (your rowMenu concept)
     if (Array.isArray(rowMenu) && rowMenu.length) {
       rowMenu
         .filter((item) => {
@@ -715,37 +753,37 @@ export default function ReusableCrudInertia({
 
   const mainColumns = canRowActionsExist
     ? [
-        ...columns,
-        {
-          title: "Actions",
-          align: "right",
-          width: 90,
-          render: (_, record) => (
-            <Dropdown menu={{ items: getRowActionItems(record, false) }} trigger={["click"]}>
-              <Button shape="circle" icon={<EllipsisOutlined />} />
-            </Dropdown>
-          ),
-        },
-      ]
+      ...columns,
+      {
+        title: "Actions",
+        align: "right",
+        width: 90,
+        render: (_, record) => (
+          <Dropdown menu={{ items: getRowActionItems(record, false) }} trigger={["click"]}>
+            <Button shape="circle" icon={<EllipsisOutlined />} />
+          </Dropdown>
+        ),
+      },
+    ]
     : columns;
 
   const inactiveColumns = canRowActionsExist
     ? [
-        ...columns,
-        {
-          title: "Actions",
-          align: "right",
-          width: 90,
-          render: (_, record) => (
-            <Dropdown menu={{ items: getRowActionItems(record, true) }} trigger={["click"]}>
-              <Button shape="circle" icon={<EllipsisOutlined />} />
-            </Dropdown>
-          ),
-        },
-      ]
+      ...columns,
+      {
+        title: "Actions",
+        align: "right",
+        width: 90,
+        render: (_, record) => (
+          <Dropdown menu={{ items: getRowActionItems(record, true) }} trigger={["click"]}>
+            <Button shape="circle" icon={<EllipsisOutlined />} />
+          </Dropdown>
+        ),
+      },
+    ]
     : columns;
 
-  /* ----------------------------- field renderer (same as your DRF version) ----------------------------- */
+  /* ----------------------------- field renderer ----------------------------- */
   const renderFormFields = (values, setFieldValue, errors, touched) => {
     const renderOneField = (field) => {
       if (field.condition && !field.condition(values)) return null;
@@ -811,8 +849,8 @@ export default function ReusableCrudInertia({
                     currentVal !== undefined && currentVal !== ""
                       ? currentVal
                       : field.defaultValue !== undefined && field.defaultValue !== ""
-                      ? field.defaultValue
-                      : undefined;
+                        ? field.defaultValue
+                        : undefined;
 
                   return (
                     <Select
@@ -902,6 +940,52 @@ export default function ReusableCrudInertia({
                     </Upload>
                   );
 
+                case "transfer": {
+                  const valueKey = field.optionValueKey ?? "value";
+                  const labelKey = field.optionLabelKey ?? "label";
+
+                  const dataSource = (field.options || []).map((opt) => {
+                    const rawVal = opt?.[valueKey] ?? opt?.id;
+                    const key = field.valueType === "number" ? String(Number(rawVal)) : String(rawVal);
+                    return { key, title: opt?.[labelKey] ?? opt?.name ?? key, ...opt };
+                  });
+
+                  const targetKeys = (values?.[name] || []).map((v) =>
+                    field.valueType === "number" ? String(Number(v)) : String(v)
+                  );
+
+                  const handleTransferChange = (nextTargetKeys) => {
+                    const normalized = nextTargetKeys.map((k) => (field.valueType === "number" ? Number(k) : k));
+                    setFieldValue(name, normalized);
+                  };
+
+                  const filterOption = (inputValue, item) => {
+                    const term = inputValue.toLowerCase();
+                    return (
+                      (item.title && item.title.toLowerCase().includes(term)) ||
+                      (field.searchKeys || []).some((k) =>
+                        String(item?.[k] ?? "").toLowerCase().includes(term)
+                      )
+                    );
+                  };
+
+                  return (
+                    <Transfer
+                      dataSource={dataSource}
+                      targetKeys={targetKeys}
+                      onChange={handleTransferChange}
+                      titles={field.transferTitles || ["Available", "Selected"]}
+                      listStyle={field.listStyle || { width: "100%", height: 300 }}
+                      showSearch={field.showSearch ?? true}
+                      filterOption={filterOption}
+                      oneWay={field.oneWay ?? false}
+                      render={(item) => item.title}
+                      disabled={readOnly}
+                      {...(field.transferProps || {})}
+                    />
+                  );
+                }
+
                 case "fieldArray":
                   return (
                     <FieldArray name={name}>
@@ -933,7 +1017,137 @@ export default function ReusableCrudInertia({
                     </FieldArray>
                   );
 
-                // (You can paste your objectArray / transfer / group sections here if needed)
+                case "objectArray":
+                  return (
+                    <FieldArray name={name}>
+                      {({ push, remove }) => {
+                        const rows = values?.[name] || [];
+                        const cols = field.columns || [];
+
+                        return (
+                          <div style={{ border: "1px solid #d9d9d9", borderRadius: 6 }}>
+                            <div
+                              style={{
+                                display: "grid",
+                                gridTemplateColumns: `${cols.map((c) => c.width || "1fr").join(" ")} 48px`,
+                                gap: 8,
+                                padding: "10px 12px",
+                                background: field.headerBg || "#3f4652",
+                                color: field.headerColor || "#fff",
+                                fontWeight: 700,
+                              }}
+                            >
+                              {cols.map((c) => (
+                                <div key={c.key}>{c.label}</div>
+                              ))}
+                              <div />
+                            </div>
+
+                            {rows.map((r, idx) => (
+                              <div
+                                key={idx}
+                                style={{
+                                  display: "grid",
+                                  gridTemplateColumns: `${cols.map((c) => c.width || "1fr").join(" ")} 48px`,
+                                  gap: 8,
+                                  padding: "10px 12px",
+                                  borderTop: "1px solid #f0f0f0",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {cols.map((c) => {
+                                  const path = `${name}[${idx}].${c.key}`;
+                                  const val = r?.[c.key];
+                                  const cellReadOnly = readOnly || !!c.readOnly;
+
+                                  if (c.type === "number") {
+                                    return (
+                                      <InputNumber
+                                        key={c.key}
+                                        size="large"
+                                        style={{ width: "100%" }}
+                                        value={val}
+                                        min={c.min}
+                                        max={c.max}
+                                        placeholder={c.placeholder || ""}
+                                        disabled={cellReadOnly}
+                                        onChange={(v) => setFieldValue(path, v)}
+                                      />
+                                    );
+                                  }
+
+                                  if (c.type === "select") {
+                                    const opts = (c.options || []).map(normalizeOption);
+                                    return (
+                                      <Select
+                                        key={c.key}
+                                        size="large"
+                                        showSearch
+                                        value={val ?? undefined}
+                                        placeholder={c.placeholder || "Select..."}
+                                        disabled={cellReadOnly}
+                                        onChange={(v, option) => {
+                                          setFieldValue(path, v);
+                                          if (c.labelField) {
+                                            const opt = Array.isArray(option) ? option?.[0] : option;
+                                            const lbl = opt?.children ?? opt?.label ?? "";
+                                            setFieldValue(`${name}[${idx}].${c.labelField}`, lbl);
+                                          }
+                                        }}
+                                      >
+                                        {opts.map((o) => (
+                                          <Select.Option key={o.value} value={o.value}>
+                                            {o.label}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    );
+                                  }
+
+                                  return (
+                                    <Input
+                                      key={c.key}
+                                      size="large"
+                                      value={val}
+                                      placeholder={c.placeholder || ""}
+                                      disabled={cellReadOnly}
+                                      onChange={(e) => setFieldValue(path, e.target.value)}
+                                    />
+                                  );
+                                })}
+
+                                {!readOnly ? (
+                                  <Button
+                                    size="large"
+                                    danger
+                                    type="text"
+                                    icon={<DeleteOutlined />}
+                                    onClick={() => remove(idx)}
+                                  />
+                                ) : (
+                                  <div />
+                                )}
+                              </div>
+                            ))}
+
+                            {!readOnly && (
+                              <div style={{ padding: 12, borderTop: "1px solid #f0f0f0" }}>
+                                <Button
+                                  size="large"
+                                  type="dashed"
+                                  icon={<PlusOutlined />}
+                                  onClick={() => push(field.defaultItem || {})}
+                                >
+                                  {field.addButtonLabel || "Add Row"}
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }}
+                    </FieldArray>
+                  );
+
                 default:
                   return (
                     <Field
@@ -998,39 +1212,31 @@ export default function ReusableCrudInertia({
     const containsFile = hasAnyFile(values);
 
     if (!isEditMode) {
-      router.post(
-        storeUrl,
-        containsFile ? buildFormData(values) : values,
-        {
-          forceFormData: containsFile,
-          preserveScroll: true,
-          onSuccess: () => {
-            message.success("Saved successfully");
-            setVisible(false);
-            if (typeof handleAddedData === "function") handleAddedData(values);
-            refetchActive({ [pageParam]: pagination.current });
-          },
-          onError: () => message.error("Something went wrong"),
-        }
-      );
-      return;
-    }
-
-    router.put(
-      updateUrl(editId),
-      containsFile ? buildFormData(values) : values,
-      {
+      router.post(storeUrl, containsFile ? buildFormData(values) : values, {
         forceFormData: containsFile,
         preserveScroll: true,
         onSuccess: () => {
           message.success("Saved successfully");
           setVisible(false);
+          if (typeof handleAddedData === "function") handleAddedData(values);
           refetchActive({ [pageParam]: pagination.current });
-          if (enableInactiveDrawer && inactiveDrawer) refetchInactive();
         },
         onError: () => message.error("Something went wrong"),
-      }
-    );
+      });
+      return;
+    }
+
+    router.put(updateUrl(editId), containsFile ? buildFormData(values) : values, {
+      forceFormData: containsFile,
+      preserveScroll: true,
+      onSuccess: () => {
+        message.success("Saved successfully");
+        setVisible(false);
+        refetchActive({ [pageParam]: pagination.current });
+        if (enableInactiveDrawer && inactiveDrawer) refetchInactive();
+      },
+      onError: () => message.error("Something went wrong"),
+    });
   };
 
   /* ----------------------------- modal/drawer form ----------------------------- */
@@ -1071,7 +1277,13 @@ export default function ReusableCrudInertia({
               onClose={() => setVisible(false)}
               destroyOnClose
               extra={
-                <Button type="primary" onClick={submitForm} disabled={!isValid || isSubmitting} loading={isSubmitting}>
+                <Button
+                  type="primary"
+                  onClick={submitForm}
+                  disabled={!isValid || isSubmitting}
+                  loading={isSubmitting}
+                  style={{ borderRadius: 2, fontWeight: 600 }}
+                >
                   Save
                 </Button>
               }
@@ -1098,14 +1310,14 @@ export default function ReusableCrudInertia({
     </Formik>
   );
 
-  /* ----------------------------- header right ----------------------------- */
+  /* ----------------------------- header right (anchor bar) ----------------------------- */
   const headerRight = (
     <>
       {canAdd && (
         <Button
           icon={<PlusOutlined />}
           type="primary"
-          style={{ borderRadius: 2, fontWeight: 800 }}
+          style={{ borderRadius: 2, fontWeight: 600 }}
           onClick={() => {
             setEditingRecord(null);
             setVisible(true);
@@ -1116,20 +1328,28 @@ export default function ReusableCrudInertia({
       )}
 
       {hasActions && canView && (
-        <Dropdown menu={{ items: topMenuItems }} placement="bottomLeft" trigger={["click"]}>
-          <Button icon={<MoreOutlined />}>Actions</Button>
-        </Dropdown>
+
+        <Button
+          icon={<RocketOutlined />}
+          type="default"
+          style={{ borderRadius: 2, fontWeight: 600 }}
+          onClick={() => setRocketDrawerOpen(true)}
+          title="Quick tools"
+        >
+         </Button>
       )}
     </>
   );
 
-  /* ----------------------------- render ----------------------------- */
+  /* ----------------------------- render guards ----------------------------- */
   if (!canView) {
     return <div style={{ padding: "12px 16px", color: "#999" }}>You do not have permission to view this list.</div>;
   }
 
   return (
     <>
+      {densityStyle}
+
       {hasAnchors && (
         <AnchorFilterTabs
           items={anchorFilters}
@@ -1141,9 +1361,9 @@ export default function ReusableCrudInertia({
       )}
 
       <div style={{ background: "#fff" }}>
-        <div className="pt-3 px-3">
+        <div className="p-0">
           {/* bulk actions bar */}
-          {canView && selectedRowKeys.length > 0 && bulkactions?.length > 0 && (
+          {selectedRowKeys.length > 0 && bulkactions?.length > 0 && (
             <div
               style={{
                 marginBottom: 12,
@@ -1156,6 +1376,7 @@ export default function ReusableCrudInertia({
               <span style={{ marginRight: 12, fontWeight: 700 }}>
                 Bulk Actions ({selectedRowKeys.length} selected):
               </span>
+
               {bulkactions.map((action, index) => (
                 <Button
                   key={index}
@@ -1185,11 +1406,11 @@ export default function ReusableCrudInertia({
             </div>
           )}
 
-          {/* search + actions */}
-          <div className="flex gap-2 mb-4">
-            <Row justify="space-between" style={{ width: "100%" }}>
+          {/* search + right controls */}
+          <div className="flex gap-2 mb-0 p-0">
+            <Row justify="space-between" style={{ width: "100%" }} className="p-0">
               {showSearch && (
-                <Col xs={16} style={{ display: "flex", gap: 6 }}>
+                <Col xs={16} style={{ display: "flex", gap: 6 }} className="border-end">
                   <Input
                     size="large"
                     placeholder={`Search ${title}`}
@@ -1200,24 +1421,59 @@ export default function ReusableCrudInertia({
                       setSearchText(v);
                       refetchActive({ [pageParam]: 1, [searchParam]: v });
                     }}
-                    style={{ width: "100%", borderRadius: 0 }}
+                    style={{ width: "100%", borderRadius: 0,border:"none",padding:10 }}
                   />
                 </Col>
               )}
 
-              <Col xs={8} style={{ display: "flex", justifyContent: "flex-end", gap: 6 }}>
-                {headerRight}
+              <Col xs={8} style={{ display: "flex", justifyContent: "flex-end", gap: 6 }} className="py-2 px-2">
+                {/* Row height / density icon */}
+                <Dropdown menu={{ items: rowDensityMenuItems }} placement="bottomRight" trigger={["click"]}>
+                  <Button
+                    icon={<ColumnHeightOutlined />}
+                    style={{ borderRadius: 2, fontWeight: 600 }}
+                    title="Row height"
+                  />
+                </Dropdown>
+
+                {/* Rocket drawer button */}
+                <Dropdown menu={{ items: topMenuItems }} placement="bottomLeft" trigger={["click"]}>
+                  <Button icon={<MoreOutlined />}>Options</Button>
+                </Dropdown>
+
+                {/* Keep the same style actions as your design */}
+                {!hasAnchors && canAdd && (
+                  <Button
+                    icon={<PlusOutlined />}
+                    type="primary"
+                    style={{ borderRadius: 2, fontWeight: 600 }}
+                    onClick={() => {
+                      setEditingRecord(null);
+                      setVisible(true);
+                    }}
+                  >
+                    ADD NEW
+                  </Button>
+                )}
+
+                {!hasAnchors && hasActions && (
+
+                  <Dropdown menu={{ items: topMenuItems }} placement="bottomLeft" trigger={["click"]}>
+                    <Button icon={<MoreOutlined />}>Actions</Button>
+                  </Dropdown>
+                )}
               </Col>
             </Row>
           </div>
 
           {/* table */}
-          <div style={{ padding: "12px 16px" }}>
+          <div style={{ padding: "0px" }}>
             <Table
               rowKey="id"
               columns={mainColumns}
               dataSource={currentRows}
               rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
+              rowClassName={rowClassName}
               pagination={{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
@@ -1226,8 +1482,7 @@ export default function ReusableCrudInertia({
                 onChange: (page, pageSize) =>
                   refetchActive({ [pageParam]: page, [pageSizeParam]: pageSize }),
               }}
-              onChange={(pager, _filters, sorter) => {
-                // optional: if you want server sorting with AntD
+              onChange={(_pager, _filters, sorter) => {
                 if (sorter?.field) {
                   const dir = sorter.order === "ascend" ? "asc" : "desc";
                   refetchActive({ [sortParam]: sorter.field, [dirParam]: dir, [pageParam]: 1 });
@@ -1241,11 +1496,63 @@ export default function ReusableCrudInertia({
       {/* modal/drawer form */}
       {formNode}
 
-      {/* inactive drawer (same UX) */}
+      {/* Rocket drawer */}
+      <Drawer
+        width={520}
+        title={
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <RocketOutlined />
+            <span style={{ fontWeight: 600 }}>Quick Tools</span>
+          </div>
+        }
+        open={rocketDrawerOpen}
+        onClose={() => setRocketDrawerOpen(false)}
+        destroyOnClose
+      >
+        <div style={{ display: "grid", gap: 10 }}>
+          <div style={{ fontWeight: 600, color: "#0f172a" }}>Actions</div>
+
+          <Button
+            icon={<SettingOutlined />}
+            onClick={() => message.info("Put your custom quick action here")}
+            style={{ borderRadius: 2, fontWeight: 600, textAlign: "left" }}
+            block
+          >
+            Open Settings / Quick Action
+          </Button>
+
+          {enableInactiveDrawer && (
+            <Button
+              icon={<EyeInvisibleOutlined />}
+              onClick={() => {
+                setRocketDrawerOpen(false);
+                const next = true;
+                setInactiveDrawer(next);
+                if (next) refetchInactive({ inactive_drawer: 1, inactive_page: 1 });
+              }}
+              style={{ borderRadius: 2, fontWeight: 600, textAlign: "left" }}
+              block
+            >
+              View Inactive Records
+            </Button>
+          )}
+
+          <Button
+            icon={<ReloadOutlined />}
+            onClick={() => refetchActive({ [pageParam]: pagination.current })}
+            style={{ borderRadius: 2, fontWeight: 600, textAlign: "left" }}
+            block
+          >
+            Refresh List
+          </Button>
+        </div>
+      </Drawer>
+
+      {/* inactive drawer */}
       {enableInactiveDrawer && (
         <Drawer
           width={900}
-          title={`Inactive ${title} (${inactivePagination.total})`}
+          title={`Inactive ${title} (${inactivePagination.total || 0})`}
           closable
           onClose={() => setInactiveDrawer(false)}
           open={inactiveDrawer}
@@ -1267,6 +1574,7 @@ export default function ReusableCrudInertia({
             rowKey="id"
             columns={inactiveColumns}
             dataSource={inactiveRows}
+            rowClassName={rowClassName}
             pagination={{
               current: inactivePagination.current,
               pageSize: inactivePagination.pageSize,

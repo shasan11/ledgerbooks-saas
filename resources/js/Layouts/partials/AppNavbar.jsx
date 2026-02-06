@@ -1,7 +1,7 @@
 // resources/js/Layouts/partials/AppNavbar.jsx
 import React, { useMemo } from "react";
 import { Link } from "@inertiajs/react";
-import { Layout, Menu, Dropdown, Avatar, Space } from "antd";
+import { Layout, Dropdown, Avatar, Space } from "antd";
 import {
   DashboardOutlined,
   UserOutlined,
@@ -13,6 +13,8 @@ import {
 const { Header } = Layout;
 
 export default function AppNavbar({ user }) {
+  const NAV_HEIGHT = 64;
+
   // For now, all top links also go to homepage
   const toHome = (text) => <Link href="/">{text}</Link>;
 
@@ -44,20 +46,28 @@ export default function AppNavbar({ user }) {
   ];
 
   return (
-    <Header style={{ display: "flex", alignItems: "center", gap: 12 }}>
+    <Header
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: NAV_HEIGHT,
+        lineHeight: `${NAV_HEIGHT}px`,
+        zIndex: 1000,
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        paddingInline: 16,
+      }}
+    >
       {/* Brand / Logo */}
       <Link href="/" style={{ color: "white", fontWeight: 700 }}>
         LedgerBooks
       </Link>
 
-      {/* Top menu */}
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        selectedKeys={["dashboard"]}
-        items={topItems}
-        style={{ flex: 1, minWidth: 0 }}
-      />
+      {/* Top menu placeholder */}
+      <div style={{ flex: 1 }}>sa</div>
 
       {/* User dropdown */}
       <Dropdown menu={{ items: userMenuItems }} trigger={["click"]}>

@@ -1,6 +1,6 @@
 // resources/js/Layouts/AuthenticatedLayout.jsx
 import React, { useState } from "react";
-import { Layout, Breadcrumb, theme } from "antd";
+import { Layout, theme } from "antd";
 import { usePage } from "@inertiajs/react";
 
 import AppNavbar from "./partials/AppNavbar";
@@ -15,6 +15,8 @@ export default function AuthenticatedLayout({
   defaultOpenKeys = ["crm", "accounting"],
   siderWidth = 220,
 }) {
+  const NAV_HEIGHT = 64;
+
   const { props } = usePage();
   const user = props?.auth?.user;
 
@@ -24,40 +26,76 @@ export default function AuthenticatedLayout({
 
   const [openKeys, setOpenKeys] = useState(defaultOpenKeys);
 
-  // For now we hard-select "home" (you'll wire route-based selection later)
+  // TODO: wire route-based selection later
   const selectedKeys = ["home"];
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ height: "100vh", overflow: "hidden" }}>
+      {/* Fixed navbar */}
       <AppNavbar user={user} />
 
-      <Layout>
-        <AppSidebar
-          width={siderWidth}
-          openKeys={openKeys}
-          setOpenKeys={setOpenKeys}
-          selectedKeys={selectedKeys}
-          colorBgContainer={colorBgContainer}
-        />
+      {/* Everything below navbar */}
+      <Layout
+        style={{
+          marginTop: NAV_HEIGHT,
+          height: `calc(100vh - ${NAV_HEIGHT}px)`,
+          overflow: "hidden",
+        }}
+        className="border-end"
+      >
+        {/* Sidebar: make it its own scroll container */}
+        <div
+          style={{
+            width: siderWidth,
+            height: "100%",
+            overflowY: "auto",
+            overflowX: "hidden",
+            borderRight: "1px solid #f0f0f0",
+            background: colorBgContainer,
+          }}
+        >
+          <AppSidebar
+            width={siderWidth}
+            openKeys={openKeys}
+            setOpenKeys={setOpenKeys}
+            selectedKeys={selectedKeys}
+            colorBgContainer={colorBgContainer}
+          />
+        </div>
 
-        <Layout style={{ padding: "0 24px 24px" }}>
+        {/* Right side: header (fixed inside area) + content (scrollable) */}
+        <Layout style={{ padding: 0, background: "#fafafa", overflow: "hidden" }}>
           {header ? (
-            <div style={{ marginTop: 16, marginBottom: 8 }}>{header}</div>
+            <div
+              className="border-bottom px-2 pt-3 pb-2"
+              style={{
+                flex: "0 0 auto",
+                background: "#fafafa",
+              }}
+            >
+              {header}
+            </div>
           ) : null}
 
-          <Breadcrumb items={breadcrumb} style={{ margin: "16px 0" }} />
-
-          <Content
+          {/* Content area scrolls independently */}
+          <div
             style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
+              flex: 1,
+              overflowY: "auto",
+              padding: 0,
             }}
           >
-            {children}
-          </Content>
+            <Content
+              style={{
+                margin: 0,
+                minHeight: 280,
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              {children}
+            </Content>
+          </div>
         </Layout>
       </Layout>
     </Layout>

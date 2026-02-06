@@ -1,3 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+a{
+    text-decoration: none !important;
+}
+/* Base: no scrollbar visible */
+.app-sidebar {
+  overflow: hidden !important;
+  background-color: #f5f5f5 !important;
+
+  /* Firefox: hide scrollbar */
+  scrollbar-width: none;
+}
+
+/* WebKit: hide scrollbar */
+.app-sidebar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* On hover: enable scrolling + show scrollbar */
+.app-sidebar:hover {
+  overflow: auto !important;
+
+  /* Firefox: show scrollbar */
+  scrollbar-width: thin;
+}
+
+/* WebKit: show scrollbar width on hover */
+.app-sidebar:hover::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* WebKit thumb: visible only on hover */
+.app-sidebar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background: transparent;
+}
+
+.app-sidebar:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.app-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Menu full height */
+.app-sidebar__menu {
+  height: 100%;
+  border-inline-end: 0;
+  background-color: #f5f5f5 !important;
+}
+

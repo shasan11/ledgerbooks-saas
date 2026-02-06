@@ -8,7 +8,7 @@ export default function Index() {
   const { items, inactiveItems, query } = usePage().props;
 
   return (
-    <AuthenticatedLayout header={<h2>Product cateogies</h2>}>
+    <AuthenticatedLayout>
     <ReusableCrudInertia
       indexUrl="/product-categories"
       storeUrl="/product-categories"
@@ -31,11 +31,11 @@ export default function Index() {
       crudInitialValues={{ name: "", description: "", active: true }}
       anchorFilters={[
         { key: "all", label: "All", title: "Product Categories", params: {} },
-        { key: "active", label: "Active", title: "Product Categories", params: { active: 1 } },
-        { key: "inactive", label: "Inactive", title: "Product Categories", params: { active: 0 } },
+        { key: "active", label: "Active", title: "Product Categories", params: { active: true } },
+        { key: "inactive", label: "Inactive", title: "Product Categories", params: { active: false } },
       ]}
       enableInactiveDrawer={true}
-      form_ui="drawer"
+      form_ui="modal"
       drawerWidth={1200}
     />
     </AuthenticatedLayout>
