@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import ReusableCrudInertia from "@/Components/ReusableCrud";
 import * as Yup from "yup";
@@ -13,7 +13,25 @@ const stageOptions = [
 ];
 
 export default function Index() {
-  const { items, inactiveItems } = usePage().props;
+  const { items, inactiveItems, contacts = [], users = [] } = usePage().props;
+
+  const contactOptions = useMemo(
+    () =>
+      contacts.map((contact) => ({
+        value: contact.id,
+        label: contact.code ? `${contact.name} (${contact.code})` : contact.name,
+      })),
+    [contacts]
+  );
+
+  const ownerOptions = useMemo(
+    () =>
+      users.map((user) => ({
+        value: user.id,
+        label: user.name || user.email || user.id,
+      })),
+    [users]
+  );
 
   return (
     <AuthenticatedLayout>
@@ -33,13 +51,20 @@ export default function Index() {
         fields={[
           { type: "text", name: "title", label: "Title", required: true, col: 12 },
           { type: "text", name: "code", label: "Code", col: 12 },
-          { type: "number", name: "contact_id", label: "Contact ID", required: true, col: 12 },
+          {
+            type: "select",
+            name: "contact_id",
+            label: "Contact",
+            required: true,
+            options: contactOptions,
+            col: 12,
+          },
           { type: "select", name: "stage", label: "Stage", options: stageOptions, col: 12 },
           { type: "date", name: "expected_close", label: "Expected Close", col: 12 },
           { type: "number", name: "probability", label: "Probability (%)", col: 12 },
           { type: "number", name: "expected_value", label: "Expected Value", col: 12 },
           { type: "text", name: "source", label: "Source", col: 12 },
-          { type: "text", name: "owner_id", label: "Owner ID", col: 12 },
+          { type: "select", name: "owner_id", label: "Owner", options: ownerOptions, col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
           { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
@@ -50,13 +75,13 @@ export default function Index() {
         crudInitialValues={{
           title: "",
           code: "",
-          contact_id: "",
+          contact_id: null,
           stage: "lead",
           expected_close: "",
           probability: 0,
           expected_value: 0,
           source: "",
-          owner_id: "",
+          owner_id: null,
           description: "",
           active: true,
         }}

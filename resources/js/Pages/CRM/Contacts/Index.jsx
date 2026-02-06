@@ -11,8 +11,17 @@ const typeOptions = [
 ];
 
 export default function Index() {
-  const { items, inactiveItems, type, title } = usePage().props;
+  const { items, inactiveItems, type, title, contactGroups = [] } = usePage().props;
   const fixedType = Boolean(type);
+
+  const contactGroupOptions = useMemo(
+    () =>
+      contactGroups.map((group) => ({
+        value: group.contact_group_id ?? group.id,
+        label: group.name,
+      })),
+    [contactGroups]
+  );
 
   const fields = useMemo(() => {
     const base = [
@@ -21,7 +30,13 @@ export default function Index() {
       { type: "text", name: "phone", label: "Phone", col: 12 },
       { type: "text", name: "email", label: "Email", col: 12 },
       { type: "text", name: "pan", label: "PAN", col: 12 },
-      { type: "number", name: "contact_group_id", label: "Contact Group ID", col: 12 },
+      {
+        type: "select",
+        name: "contact_group_id",
+        label: "Contact Group",
+        options: contactGroupOptions,
+        col: 12,
+      },
       { type: "textarea", name: "address", label: "Address", col: 24 },
       { type: "checkbox", name: "accept_purchase", label: "Accept Purchase", col: 12 },
       { type: "number", name: "credit_terms_days", label: "Credit Terms (Days)", col: 12 },
@@ -42,7 +57,7 @@ export default function Index() {
     }
 
     return base;
-  }, [fixedType]);
+  }, [contactGroupOptions, fixedType]);
 
   const columns = useMemo(() => {
     const base = [
@@ -66,7 +81,7 @@ export default function Index() {
     phone: "",
     email: "",
     pan: "",
-    contact_group_id: 0,
+    contact_group_id: null,
     address: "",
     accept_purchase: false,
     credit_terms_days: 0,

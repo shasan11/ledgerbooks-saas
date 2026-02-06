@@ -72,6 +72,11 @@ class ContactGroupController extends Controller
             'items' => $items,
             'inactiveItems' => $inactiveItems,
             'query' => $request->all(),
+            'contactGroups' => ContactGroup::query()
+                ->when($branchId !== null, fn($q) => $q->where('branch_id', $branchId))
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get(['id', 'name', 'contact_group_id']),
         ]);
     }
 

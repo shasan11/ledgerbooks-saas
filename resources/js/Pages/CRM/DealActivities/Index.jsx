@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import ReusableCrudInertia from "@/Components/ReusableCrud";
 import * as Yup from "yup";
@@ -19,7 +19,34 @@ const statusOptions = [
 ];
 
 export default function Index() {
-  const { items, inactiveItems } = usePage().props;
+  const { items, inactiveItems, contacts = [], deals = [], users = [] } = usePage().props;
+
+  const contactOptions = useMemo(
+    () =>
+      contacts.map((contact) => ({
+        value: contact.id,
+        label: contact.code ? `${contact.name} (${contact.code})` : contact.name,
+      })),
+    [contacts]
+  );
+
+  const dealOptions = useMemo(
+    () =>
+      deals.map((deal) => ({
+        value: deal.id,
+        label: deal.code ? `${deal.title} (${deal.code})` : deal.title,
+      })),
+    [deals]
+  );
+
+  const userOptions = useMemo(
+    () =>
+      users.map((user) => ({
+        value: user.id,
+        label: user.name || user.email || user.id,
+      })),
+    [users]
+  );
 
   return (
     <AuthenticatedLayout>
@@ -39,12 +66,12 @@ export default function Index() {
         fields={[
           { type: "select", name: "type", label: "Type", options: typeOptions, required: true, col: 12 },
           { type: "text", name: "subject", label: "Subject", required: true, col: 12 },
-          { type: "number", name: "contact_id", label: "Contact ID", col: 12 },
-          { type: "number", name: "deal_id", label: "Deal ID", col: 12 },
+          { type: "select", name: "contact_id", label: "Contact", options: contactOptions, col: 12 },
+          { type: "select", name: "deal_id", label: "Deal", options: dealOptions, col: 12 },
           { type: "date", name: "due_at", label: "Due Date", col: 12 },
           { type: "date", name: "completed_at", label: "Completed At", col: 12 },
           { type: "select", name: "status", label: "Status", options: statusOptions, col: 12 },
-          { type: "text", name: "assigned_to_id", label: "Assigned To", col: 12 },
+          { type: "select", name: "assigned_to_id", label: "Assigned To", options: userOptions, col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
           { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
@@ -55,12 +82,12 @@ export default function Index() {
         crudInitialValues={{
           type: "task",
           subject: "",
-          contact_id: "",
-          deal_id: "",
+          contact_id: null,
+          deal_id: null,
           due_at: "",
           completed_at: "",
           status: "pending",
-          assigned_to_id: "",
+          assigned_to_id: null,
           description: "",
           active: true,
         }}

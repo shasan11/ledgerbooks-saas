@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import ReusableCrudInertia from "@/Components/ReusableCrud";
 import * as Yup from "yup";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 export default function Index() {
-  const { items, inactiveItems } = usePage().props;
+  const { items, inactiveItems, accountTypes = [], chartOfAccounts = [] } = usePage().props;
+
+  const accountTypeOptions = useMemo(
+    () =>
+      accountTypes.map((type) => ({
+        value: type.id,
+        label: type.name,
+      })),
+    [accountTypes]
+  );
+
+  const chartOptions = useMemo(
+    () =>
+      chartOfAccounts.map((account) => ({
+        value: account.id,
+        label: account.code ? `${account.code} - ${account.name}` : account.name,
+      })),
+    [chartOfAccounts]
+  );
+
+  const chartIdOptions = useMemo(
+    () =>
+      chartOfAccounts.map((account) => ({
+        value: account.c_o_a_id ?? account.id,
+        label: account.code ? `${account.code} - ${account.name}` : account.name,
+      })),
+    [chartOfAccounts]
+  );
 
   return (
     <AuthenticatedLayout>
@@ -24,9 +51,22 @@ export default function Index() {
         fields={[
           { type: "text", name: "name", label: "Name", required: true, col: 12 },
           { type: "text", name: "code", label: "Code", required: true, col: 12 },
-          { type: "number", name: "account_type_id", label: "Account Type ID", required: true, col: 12 },
-          { type: "text", name: "parent_id", label: "Parent ID", col: 12 },
-          { type: "number", name: "c_o_a_id", label: "COA ID", col: 12 },
+          {
+            type: "select",
+            name: "account_type_id",
+            label: "Account Type",
+            required: true,
+            options: accountTypeOptions,
+            col: 12,
+          },
+          {
+            type: "select",
+            name: "parent_id",
+            label: "Parent Account",
+            options: chartOptions,
+            col: 12,
+          },
+          { type: "select", name: "c_o_a_id", label: "COA", options: chartIdOptions, col: 12 },
           { type: "checkbox", name: "is_group", label: "Is Group", col: 12 },
           { type: "checkbox", name: "is_system", label: "Is System", col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
@@ -40,9 +80,9 @@ export default function Index() {
         crudInitialValues={{
           name: "",
           code: "",
-          account_type_id: "",
+          account_type_id: null,
           parent_id: "",
-          c_o_a_id: 0,
+          c_o_a_id: null,
           is_group: false,
           is_system: false,
           description: "",

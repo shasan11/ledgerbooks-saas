@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accounting;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccountType;
 use App\Models\COA;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,6 +75,15 @@ class ChartOfAccountController extends Controller
             'items' => $items,
             'inactiveItems' => $inactiveItems,
             'query' => $request->all(),
+            'accountTypes' => AccountType::query()
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get(['id', 'name']),
+            'chartOfAccounts' => COA::query()
+                ->when($branchId !== null, fn($q) => $q->where('branch_id', $branchId))
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get(['id', 'name', 'code', 'c_o_a_id']),
         ]);
     }
 
