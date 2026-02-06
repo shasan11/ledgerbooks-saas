@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Accounting;
 use App\Http\Controllers\Controller;
 use App\Models\AccountType;
 use App\Models\COA;
+use App\Services\Accounting\CoaSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -15,6 +16,11 @@ class ChartOfAccountController extends Controller
     {
         $user = $request->user();
         $branchId = $user->branch_id ?? null;
+        $branchId = $branchId !== null ? (int) $branchId : null;
+
+        if ($branchId !== null) {
+            CoaSeeder::seedForBranch($branchId, $user->id);
+        }
 
         $search = trim((string) $request->input('search', ''));
         $perPage = (int) $request->input('per_page', 20);
@@ -22,6 +28,7 @@ class ChartOfAccountController extends Controller
 
         $sort = (string) $request->input('sort', 'id');
         $dir = strtolower((string) $request->input('dir', 'desc')) === 'asc' ? 'asc' : 'desc';
+        $origin = (string) $request->input('origin', '');
 
         $sortable = ['id', 'name', 'code', 'active', 'created_at', 'updated_at'];
         if (!in_array($sort, $sortable, true)) {
@@ -29,7 +36,9 @@ class ChartOfAccountController extends Controller
         }
 
         $base = COA::query()
-            ->when($branchId !== null, fn($q) => $q->where('branch_id', $branchId));
+            ->when($branchId !== null, fn($q) => $q->where('branch_id', $branchId))
+            ->when($origin === 'system', fn($q) => $q->where('is_system_generated', 1))
+            ->when($origin === 'user', fn($q) => $q->where('is_system_generated', 0));
 
         if ($search !== '') {
             $base->where(function ($q) use ($search) {
@@ -55,6 +64,8 @@ class ChartOfAccountController extends Controller
 
             $inactiveQ = COA::query()
                 ->when($branchId !== null, fn($q) => $q->where('branch_id', $branchId))
+                ->when($origin === 'system', fn($q) => $q->where('is_system_generated', 1))
+                ->when($origin === 'user', fn($q) => $q->where('is_system_generated', 0))
                 ->where('active', 0);
 
             if ($inactiveSearch !== '') {
@@ -98,15 +109,11 @@ class ChartOfAccountController extends Controller
             'description' => ['nullable', 'string'],
             'parent_id' => ['nullable', 'string', 'max:255'],
             'account_type_id' => ['required', 'integer'],
-            'is_group' => ['nullable', 'boolean'],
-            'is_system' => ['nullable', 'boolean'],
             'active' => ['nullable', 'boolean'],
             'c_o_a_id' => ['nullable', 'integer'],
         ]);
 
         $data['active'] = array_key_exists('active', $data) ? (bool) $data['active'] : true;
-        $data['is_group'] = array_key_exists('is_group', $data) ? (bool) $data['is_group'] : false;
-        $data['is_system'] = array_key_exists('is_system', $data) ? (bool) $data['is_system'] : false;
         $data['branch_id'] = $branchId;
         $data['user_add_id'] = $user->id;
         $data['c_o_a_id'] = $data['c_o_a_id'] ?? 0;
@@ -126,20 +133,12 @@ class ChartOfAccountController extends Controller
             'description' => ['nullable', 'string'],
             'parent_id' => ['nullable', 'string', 'max:255'],
             'account_type_id' => ['nullable', 'integer'],
-            'is_group' => ['nullable', 'boolean'],
-            'is_system' => ['nullable', 'boolean'],
             'active' => ['nullable', 'boolean'],
             'c_o_a_id' => ['nullable', 'integer'],
         ]);
 
         if (array_key_exists('active', $data)) {
             $data['active'] = (bool) $data['active'];
-        }
-        if (array_key_exists('is_group', $data)) {
-            $data['is_group'] = (bool) $data['is_group'];
-        }
-        if (array_key_exists('is_system', $data)) {
-            $data['is_system'] = (bool) $data['is_system'];
         }
 
         $chartOfAccount->update($data);
@@ -190,7 +189,7 @@ class ChartOfAccountController extends Controller
                 'actions' => ['required', 'array'],
             ]);
 
-            $allowed = ['active', 'description', 'is_group'];
+            $allowed = ['active', 'description'];
             $actions = array_intersect_key($payload['actions'], array_flip($allowed));
 
             COA::query()
@@ -221,8 +220,6 @@ class ChartOfAccountController extends Controller
                         'description' => $row['description'] ?? null,
                         'parent_id' => $row['parent_id'] ?? null,
                         'account_type_id' => (int) ($row['account_type_id'] ?? 0),
-                        'is_group' => isset($row['is_group']) ? (bool) $row['is_group'] : false,
-                        'is_system' => isset($row['is_system']) ? (bool) $row['is_system'] : false,
                         'active' => isset($row['active']) ? (bool) $row['active'] : true,
                         'user_add_id' => $user->id,
                         'c_o_a_id' => (int) ($row['c_o_a_id'] ?? 0),
