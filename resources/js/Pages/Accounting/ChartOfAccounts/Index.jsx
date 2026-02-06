@@ -46,7 +46,6 @@ export default function Index() {
         columns={[
           { title: "Name", dataIndex: "name", sorter: true, field: "name" },
           { title: "Code", dataIndex: "code", sorter: true, field: "code" },
-          { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
         ]}
         fields={[
           { type: "text", name: "name", label: "Name", required: true, col: 12 },
@@ -70,7 +69,6 @@ export default function Index() {
           { type: "checkbox", name: "is_group", label: "Is Group", col: 12 },
           { type: "checkbox", name: "is_system", label: "Is System", col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
-          { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
         validationSchema={Yup.object({
           name: Yup.string().required("Required"),
@@ -86,7 +84,6 @@ export default function Index() {
           is_group: false,
           is_system: false,
           description: "",
-          active: true,
         }}
         enableInactiveDrawer={true}
         form_ui="modal"

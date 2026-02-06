@@ -42,7 +42,6 @@ export default function Index() {
       { type: "number", name: "credit_terms_days", label: "Credit Terms (Days)", col: 12 },
       { type: "number", name: "credit_limit", label: "Credit Limit", col: 12 },
       { type: "textarea", name: "notes", label: "Notes", col: 24 },
-      { type: "switch", name: "active", label: "Active", col: 24 },
     ];
 
     if (!fixedType) {
@@ -64,7 +63,6 @@ export default function Index() {
       { title: "Name", dataIndex: "name", sorter: true, field: "name" },
       { title: "Phone", dataIndex: "phone" },
       { title: "Email", dataIndex: "email" },
-      { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
     ];
 
     if (!fixedType) {
@@ -87,7 +85,6 @@ export default function Index() {
     credit_terms_days: 0,
     credit_limit: 0,
     notes: "",
-    active: true,
   };
 
   const validationSchema = Yup.object({

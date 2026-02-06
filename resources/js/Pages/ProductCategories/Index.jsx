@@ -16,19 +16,15 @@ export default function Index() {
       destroyUrl={(id) => `/product-categories/${id}`}
       bulkUrl="/product-categories/bulk"
       title="Product Categories"
-      columns={[
-        { title: "Name", dataIndex: "name", sorter: true, field: "name" },
-        { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
-      ]}
+      columns={[{ title: "Name", dataIndex: "name", sorter: true, field: "name" }]}
       fields={[
         { type: "text", name: "name", label: "Name", required: true, col: 24 },
         { type: "textarea", name: "description", label: "Description", col: 24 },
-        { type: "switch", name: "active", label: "Active", col: 24 },
       ]}
       validationSchema={Yup.object({
         name: Yup.string().required("Required"),
       })}
-      crudInitialValues={{ name: "", description: "", active: true }}
+      crudInitialValues={{ name: "", description: "" }}
       anchorFilters={[
         { key: "all", label: "All", title: "Product Categories", params: {} },
         { key: "active", label: "Active", title: "Product Categories", params: { active: true } },

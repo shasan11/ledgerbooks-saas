@@ -57,7 +57,6 @@ export default function Index() {
           { title: "Display Name", dataIndex: "display_name", sorter: true, field: "display_name" },
           { title: "Type", dataIndex: "type", sorter: true, field: "type" },
           { title: "Account #", dataIndex: "account_number" },
-          { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
         ]}
         fields={[
           { type: "select", name: "type", label: "Type", options: typeOptions, required: true, col: 12 },
@@ -71,7 +70,6 @@ export default function Index() {
           { type: "select", name: "coa_account_id", label: "COA Account", options: chartOptions, col: 12 },
           { type: "select", name: "c_o_a_id", label: "COA", options: chartIdOptions, col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
-          { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
         validationSchema={Yup.object({
           type: Yup.string().required("Required"),
@@ -89,7 +87,6 @@ export default function Index() {
           coa_account_id: null,
           c_o_a_id: null,
           description: "",
-          active: true,
         }}
         enableInactiveDrawer={true}
         form_ui="modal"

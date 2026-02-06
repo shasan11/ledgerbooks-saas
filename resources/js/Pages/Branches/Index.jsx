@@ -22,7 +22,6 @@ export default function BranchesIndex() {
       { title: "Code", dataIndex: "code", sorter: true, field: "code" },
       { title: "Country", dataIndex: "country", sorter: true, field: "country" },
       { title: "City", dataIndex: "city", sorter: true, field: "city" },
-      { title: "Active", dataIndex: "active", render: (v) => (v ? "Yes" : "No") },
       { title: "Head Office", dataIndex: "is_head_office", render: (v) => (v ? "Yes" : "No") },
     ],
     []
@@ -46,7 +45,6 @@ export default function BranchesIndex() {
       },
       { type: "textarea", name: "address", label: "Address", col: 24 },
       { type: "switch", name: "is_head_office", label: "Head Office", col: 12 },
-      { type: "switch", name: "active", label: "Active", col: 12 },
     ],
     [currencyOptions]
   );
@@ -70,7 +68,6 @@ export default function BranchesIndex() {
     timezone: "",
     currency_id: null,
     is_head_office: false,
-    active: true,
   };
 
   return (
