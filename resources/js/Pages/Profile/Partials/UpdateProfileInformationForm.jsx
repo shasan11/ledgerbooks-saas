@@ -71,8 +71,7 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
-                {/* ✅ Branch (only if allowed) */}
-                 
+                {canChangeBranch && (
                     <div>
                         <InputLabel htmlFor="branch_id" value="Branch" />
 
@@ -93,7 +92,7 @@ export default function UpdateProfileInformation({
 
                         <InputError className="mt-2" message={errors.branch_id} />
                     </div>
-                 
+                )}
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
