@@ -9,18 +9,20 @@ export default function UpdateProfileInformation({
     mustVerifyEmail,
     status,
     className = '',
+    branches = [],
+    canChangeBranch = false,
 }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
-            email: user.email,
+            name: user.name ?? '',
+            email: user.email ?? '',
+            branch_id: user.branch_id ?? '',
         });
 
     const submit = (e) => {
         e.preventDefault();
-
         patch(route('profile.update'));
     };
 
@@ -32,7 +34,7 @@ export default function UpdateProfileInformation({
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                    Update your account&apos;s profile information and email address.
                 </p>
             </header>
 
@@ -68,6 +70,30 @@ export default function UpdateProfileInformation({
 
                     <InputError className="mt-2" message={errors.email} />
                 </div>
+
+                {/* ✅ Branch (only if allowed) */}
+                 
+                    <div>
+                        <InputLabel htmlFor="branch_id" value="Branch" />
+
+                        <select
+                            id="branch_id"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            value={data.branch_id ?? ''}
+                            onChange={(e) => setData('branch_id', e.target.value)}
+                            required
+                        >
+                            <option value="">Select a branch</option>
+                            {branches.map((b) => (
+                                <option key={b.id} value={b.id}>
+                                    {b.name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <InputError className="mt-2" message={errors.branch_id} />
+                    </div>
+                 
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Master\BranchController;
+use App\Http\Controllers\Products\ProductCategoryController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/branches/bulk', [BranchController::class, 'bulkStore'])->name('branches.bulkStore');
     Route::put('/branches/bulk', [BranchController::class, 'bulkUpdate'])->name('branches.bulkUpdate');
     Route::delete('/branches/bulk', [BranchController::class, 'bulkDestroy'])->name('branches.bulkDestroy');
+
+    Route::get('/product-categories', [ProductCategoryController::class, 'index'])->name('productCategories.index');
+    Route::post('/product-categories', [ProductCategoryController::class, 'store'])->name('productCategories.store');
+    Route::put('/product-categories/{productCategory}', [ProductCategoryController::class, 'update'])->name('productCategories.update');
+    Route::delete('/product-categories/{productCategory}', [ProductCategoryController::class, 'destroy'])->name('productCategories.destroy');
+
+    // Bulk
+    Route::post('/product-categories/bulk', [ProductCategoryController::class, 'bulkStore'])->name('productCategories.bulkStore');
+    Route::put('/product-categories/bulk', [ProductCategoryController::class, 'bulkUpdate'])->name('productCategories.bulkUpdate');
+    Route::delete('/product-categories/bulk', [ProductCategoryController::class, 'bulkDestroy'])->name('productCategories.bulkDestroy');
 });
 
 require __DIR__.'/auth.php';

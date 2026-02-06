@@ -2,20 +2,23 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    public function authorize(): bool
+    {
+        // Everyone can update their own profile.
+        // Branch changes are controlled in rules() (permission-gated).
+        return true;
+    }
+
     public function rules(): array
     {
-        return [
+        $user = $this->user();
+
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -23,8 +26,15 @@ class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique('users', 'email')->ignore($user?->id),
             ],
         ];
+
+        // Only allow branch change if user has permission
+        if ($user && $user->can('change branch')) {
+            $rules['branch_id'] = ['required', 'integer', 'exists:branches,id'];
+        }
+
+        return $rules;
     }
 }
