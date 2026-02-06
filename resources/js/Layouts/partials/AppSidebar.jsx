@@ -167,7 +167,7 @@ export default function AppSidebar({
       inv_production_journal: "/inventory/production-journal",
 
       // HRM
-      hrm: "/hrm",
+      hrm_employees: "/hrm/employees",
 
       // Commission
       com_leads: "/commission/leads",
@@ -289,7 +289,15 @@ export default function AppSidebar({
         ],
       },
 
-      { key: "hrm", icon: <TeamOutlined />, title: "HRM", label: L("hrm", "HRM") },
+      {
+        key: "hrm",
+        icon: <TeamOutlined />,
+        title: "HRM",
+        label: "HRM",
+        children: [
+          { key: "hrm_employees", icon: <UserOutlined />, title: "Employees", label: L("hrm_employees", "Employees") },
+        ],
+      },
 
       {
         key: "commission",

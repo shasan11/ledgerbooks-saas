@@ -7,6 +7,7 @@ use App\Http\Controllers\CRM\ContactController;
 use App\Http\Controllers\CRM\ContactGroupController;
 use App\Http\Controllers\CRM\DealActivityController;
 use App\Http\Controllers\CRM\DealController;
+use App\Http\Controllers\HRM\EmployeeController;
 use App\Http\Controllers\Master\BranchController;
 use App\Http\Controllers\Products\ProductCategoryController;
 use Illuminate\Foundation\Application;
@@ -129,6 +130,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('accounting.bank-accounts.destroy');
     Route::post('/accounting/bank-accounts/bulk', [BankAccountController::class, 'bulk'])
         ->name('accounting.bank-accounts.bulk');
+
+    Route::get('/hrm/employees', [EmployeeController::class, 'index'])
+        ->name('hrm.employees.index');
+    Route::post('/hrm/employees', [EmployeeController::class, 'store'])
+        ->name('hrm.employees.store');
+    Route::put('/hrm/employees/{employee}', [EmployeeController::class, 'update'])
+        ->name('hrm.employees.update');
+    Route::delete('/hrm/employees/{employee}', [EmployeeController::class, 'destroy'])
+        ->name('hrm.employees.destroy');
+    Route::post('/hrm/employees/bulk', [EmployeeController::class, 'bulk'])
+        ->name('hrm.employees.bulk');
 });
 
 require __DIR__.'/auth.php';
