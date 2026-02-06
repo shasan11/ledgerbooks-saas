@@ -21,7 +21,6 @@ class ProductCategoryFactory extends Factory
             'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
-            'product_category_id' => ProductCategory::factory(),
         ];
     }
 }

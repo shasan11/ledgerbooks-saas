@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('user_add_id')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('is_system_generated')->default(false);
-            $table->foreignId('product_category_id');
             $table->timestamps();
         });
     }
