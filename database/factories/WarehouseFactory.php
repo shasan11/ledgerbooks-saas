@@ -19,7 +19,7 @@ class WarehouseFactory extends Factory
             'address' => fake()->text(),
             'contact_phone' => fake()->regexify('[A-Za-z0-9]{60}'),
             'is_default' => fake()->boolean(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
         ];

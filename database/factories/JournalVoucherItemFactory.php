@@ -15,7 +15,7 @@ class JournalVoucherItemFactory extends Factory
     {
         return [
             'journal_voucher_id' => JournalVoucher::factory(),
-            'account_id' => fake()->word(),
+            'account_id' => fake()->numberBetween(1, 1000),
             'dr_amount' => fake()->randomFloat(2, 0, 9999999999999999.99),
             'cr_amount' => fake()->randomFloat(2, 0, 9999999999999999.99),
             'line_note' => fake()->regexify('[A-Za-z0-9]{255}'),

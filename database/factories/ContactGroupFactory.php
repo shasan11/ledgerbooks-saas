@@ -16,9 +16,9 @@ class ContactGroupFactory extends Factory
         return [
             'branch_id' => Branch::factory(),
             'name' => fake()->name(),
-            'parent_id' => fake()->word(),
+            'parent_id' => fake()->numberBetween(1, 1000),
             'description' => fake()->text(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'contact_group_id' => ContactGroup::factory(),

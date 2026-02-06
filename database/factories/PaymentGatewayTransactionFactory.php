@@ -13,7 +13,7 @@ class PaymentGatewayTransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
             'order_payment_id' => OrderPayment::factory(),
             'gateway' => fake()->regexify('[A-Za-z0-9]{80}'),
             'transaction_id' => fake()->regexify('[A-Za-z0-9]{150}'),
@@ -21,7 +21,7 @@ class PaymentGatewayTransactionFactory extends Factory
             'response_payload' => fake()->text(),
             'status' => fake()->regexify('[A-Za-z0-9]{50}'),
             'processed_at' => fake()->dateTime(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
         ];

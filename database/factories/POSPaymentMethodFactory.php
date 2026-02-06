@@ -12,10 +12,10 @@ class POSPaymentMethodFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
             'name' => fake()->name(),
             'type' => fake()->randomElement(["cash","card","bank","wallet","cod"]),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
         ];

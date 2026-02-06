@@ -18,7 +18,7 @@ class OrderStatusHistoryFactory extends Factory
             'from_status' => fake()->regexify('[A-Za-z0-9]{50}'),
             'to_status' => fake()->regexify('[A-Za-z0-9]{50}'),
             'changed_at' => fake()->dateTime(),
-            'changed_by_id' => fake()->word(),
+            'changed_by_id' => fake()->numberBetween(1, 1000),
             'note' => fake()->regexify('[A-Za-z0-9]{255}'),
             'user_id' => User::factory(),
         ];

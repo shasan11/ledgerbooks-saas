@@ -13,12 +13,12 @@ class POSReceiptFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
-            'pos_order_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
+            'pos_order_id' => fake()->numberBetween(1, 1000),
             'receipt_no' => fake()->regexify('[A-Za-z0-9]{60}'),
             'printed_at' => fake()->dateTime(),
             'payload' => fake()->text(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'p_o_s_order_id' => POSOrder::factory(),

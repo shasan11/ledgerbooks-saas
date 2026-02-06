@@ -16,8 +16,8 @@ class ProductVariantOptionFactory extends Factory
     {
         return [
             'product_variant_id' => ProductVariant::factory(),
-            'attribute_id' => fake()->word(),
-            'option_id' => fake()->word(),
+            'attribute_id' => fake()->numberBetween(1, 1000),
+            'option_id' => fake()->numberBetween(1, 1000),
             'variant_attribute_id' => VariantAttribute::factory(),
             'variant_attribute_option_id' => VariantAttributeOption::factory(),
         ];

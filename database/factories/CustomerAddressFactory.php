@@ -13,7 +13,7 @@ class CustomerAddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
             'customer_profile_id' => CustomerProfile::factory(),
             'label' => fake()->regexify('[A-Za-z0-9]{80}'),
             'full_name' => fake()->regexify('[A-Za-z0-9]{180}'),

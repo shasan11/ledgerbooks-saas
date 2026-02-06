@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\;
 use App\Models\Branch;
 use App\Models\COA;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,10 +22,10 @@ class BankAccountFactory extends Factory
             'account_name' => fake()->regexify('[A-Za-z0-9]{150}'),
             'account_number' => fake()->regexify('[A-Za-z0-9]{80}'),
             'account_type' => fake()->randomElement(["saving","current"]),
-            'currency_id' => ::factory(),
-            'coa_account_id' => fake()->word(),
+            'currency_id' => fake()->numberBetween(1, 1000),
+            'coa_account_id' => fake()->numberBetween(1, 1000),
             'description' => fake()->text(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'c_o_a_id' => COA::factory(),

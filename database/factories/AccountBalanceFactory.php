@@ -15,12 +15,12 @@ class AccountBalanceFactory extends Factory
     {
         return [
             'branch_id' => Branch::factory(),
-            'account_id' => fake()->word(),
+            'account_id' => fake()->numberBetween(1, 1000),
             'as_of_date' => fake()->date(),
             'debit_total' => fake()->randomFloat(2, 0, 9999999999999999.99),
             'credit_total' => fake()->randomFloat(2, 0, 9999999999999999.99),
             'balance' => fake()->randomFloat(2, 0, 9999999999999999.99),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'c_o_a_id' => COA::factory(),

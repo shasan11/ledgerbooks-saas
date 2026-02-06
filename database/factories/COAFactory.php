@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\;
 use App\Models\Branch;
 use App\Models\COA;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,11 +18,11 @@ class COAFactory extends Factory
             'name' => fake()->name(),
             'code' => fake()->regexify('[A-Za-z0-9]{60}'),
             'description' => fake()->text(),
-            'parent_id' => fake()->word(),
-            'account_type_id' => ::factory(),
+            'parent_id' => fake()->numberBetween(1, 1000),
+            'account_type_id' => fake()->numberBetween(1, 1000),
             'is_group' => fake()->boolean(),
             'is_system' => fake()->boolean(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'c_o_a_id' => COA::factory(),

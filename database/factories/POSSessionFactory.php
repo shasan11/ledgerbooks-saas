@@ -13,12 +13,12 @@ class POSSessionFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
-            'shift_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
+            'shift_id' => fake()->numberBetween(1, 1000),
             'device_id' => fake()->regexify('[A-Za-z0-9]{120}'),
             'started_at' => fake()->dateTime(),
             'ended_at' => fake()->dateTime(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'p_o_s_shift_id' => POSShift::factory(),

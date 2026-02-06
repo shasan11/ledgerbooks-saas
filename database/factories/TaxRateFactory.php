@@ -19,7 +19,7 @@ class TaxRateFactory extends Factory
             'inclusive' => fake()->boolean(),
             'active_from' => fake()->date(),
             'active_to' => fake()->date(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
         ];

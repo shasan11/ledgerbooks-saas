@@ -15,7 +15,7 @@ class ProductionInputFactory extends Factory
     {
         return [
             'production_order_id' => ProductionOrder::factory(),
-            'raw_material_variant_id' => fake()->word(),
+            'raw_material_variant_id' => fake()->numberBetween(1, 1000),
             'qty_required' => fake()->randomFloat(6, 0, 999999999999.999999),
             'qty_consumed' => fake()->randomFloat(6, 0, 999999999999.999999),
             'product_variant_id' => ProductVariant::factory(),

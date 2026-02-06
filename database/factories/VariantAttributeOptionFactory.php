@@ -13,12 +13,12 @@ class VariantAttributeOptionFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_id' => fake()->word(),
-            'attribute_id' => fake()->word(),
+            'branch_id' => fake()->numberBetween(1, 1000),
+            'attribute_id' => fake()->numberBetween(1, 1000),
             'name' => fake()->name(),
             'key' => fake()->regexify('[A-Za-z0-9]{60}'),
             'description' => fake()->text(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'variant_attribute_id' => VariantAttribute::factory(),

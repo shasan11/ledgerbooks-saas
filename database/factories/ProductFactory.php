@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\;
 use App\Models\Branch;
 use App\Models\COA;
 use App\Models\ProductCategory;
@@ -21,21 +20,21 @@ class ProductFactory extends Factory
             'type' => fake()->randomElement(["goods","service"]),
             'name' => fake()->name(),
             'code' => fake()->regexify('[A-Za-z0-9]{80}'),
-            'category_id' => fake()->word(),
-            'tax_class_id' => ::factory(),
-            'primary_unit_id' => fake()->word(),
+            'category_id' => fake()->numberBetween(1, 1000),
+            'tax_class_id' => fake()->numberBetween(1, 1000),
+            'primary_unit_id' => fake()->numberBetween(1, 1000),
             'hs_code' => fake()->regexify('[A-Za-z0-9]{40}'),
             'ecommerce_enabled' => fake()->boolean(),
             'pos_enabled' => fake()->boolean(),
             'description' => fake()->text(),
             'selling_price' => fake()->randomFloat(6, 0, 999999999999.999999),
             'purchase_price' => fake()->randomFloat(6, 0, 999999999999.999999),
-            'sales_account_id' => fake()->word(),
-            'purchase_account_id' => fake()->word(),
-            'purchase_return_account_id' => fake()->word(),
+            'sales_account_id' => fake()->numberBetween(1, 1000),
+            'purchase_account_id' => fake()->numberBetween(1, 1000),
+            'purchase_return_account_id' => fake()->numberBetween(1, 1000),
             'valuation_method' => fake()->randomElement(["fifo","weighted_average"]),
             'track_inventory' => fake()->boolean(),
-            'user_add_id' => fake()->word(),
+            'user_add_id' => fake()->numberBetween(1, 1000),
             'active' => fake()->boolean(),
             'is_system_generated' => fake()->boolean(),
             'product_category_id' => ProductCategory::factory(),

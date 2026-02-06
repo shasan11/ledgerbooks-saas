@@ -15,7 +15,7 @@ class CashTransferItemFactory extends Factory
     {
         return [
             'cash_transfer_id' => CashTransfer::factory(),
-            'to_account_id' => fake()->word(),
+            'to_account_id' => fake()->numberBetween(1, 1000),
             'amount' => fake()->randomFloat(2, 0, 9999999999999999.99),
             'note' => fake()->regexify('[A-Za-z0-9]{255}'),
             'bank_account_id' => BankAccount::factory(),
