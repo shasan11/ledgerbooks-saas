@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CurrencyFactory extends Factory
@@ -22,7 +22,7 @@ class CurrencyFactory extends Factory
             'symbol' => fake()->regexify('[A-Za-z0-9]{10}'),
             'decimal_places' => fake()->numberBetween(-10000, 10000),
             'is_base' => fake()->boolean(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

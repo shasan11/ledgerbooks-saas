@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Branch;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PospaymentmethodFactory extends Factory
@@ -21,7 +21,7 @@ class PospaymentmethodFactory extends Factory
             'name' => fake()->name(),
             'type' => fake()->regexify('[A-Za-z0-9]{20}'),
             'branch_id' => Branch::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

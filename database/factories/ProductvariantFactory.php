@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Branch;
 use App\Models\Product;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductvariantFactory extends Factory
@@ -26,7 +26,7 @@ class ProductvariantFactory extends Factory
             'purchase_price' => fake()->randomFloat(6, 0, 999999999999.999999),
             'branch_id' => Branch::factory(),
             'product_id' => Product::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

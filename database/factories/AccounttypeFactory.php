@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AccounttypeFactory extends Factory
@@ -20,7 +20,7 @@ class AccounttypeFactory extends Factory
             'name' => fake()->name(),
             'category' => fake()->regexify('[A-Za-z0-9]{20}'),
             'normal_balance' => fake()->regexify('[A-Za-z0-9]{2}'),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

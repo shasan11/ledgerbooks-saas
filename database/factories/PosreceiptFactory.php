@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Branch;
 use App\Models\PosOrder;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PosreceiptFactory extends Factory
@@ -24,7 +24,7 @@ class PosreceiptFactory extends Factory
             'payload' => fake()->word(),
             'branch_id' => Branch::factory(),
             'pos_order_id' => PosOrder::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

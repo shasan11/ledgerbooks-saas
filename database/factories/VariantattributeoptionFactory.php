@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Attribute;
 use App\Models\Branch;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VariantattributeoptionFactory extends Factory
@@ -24,7 +24,7 @@ class VariantattributeoptionFactory extends Factory
             'description' => fake()->text(),
             'attribute_id' => Attribute::factory(),
             'branch_id' => Branch::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

@@ -6,7 +6,7 @@ use App\Models\Branch;
 use App\Models\Deal;
 use App\Models\Product;
 use App\Models\TaxRate;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DealitemFactory extends Factory
@@ -30,7 +30,7 @@ class DealitemFactory extends Factory
             'deal_id' => Deal::factory(),
             'product_id' => Product::factory(),
             'tax_rate_id' => TaxRate::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

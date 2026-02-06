@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TaxclassFactory extends Factory
@@ -20,7 +20,7 @@ class TaxclassFactory extends Factory
             'name' => fake()->name(),
             'code' => fake()->regexify('[A-Za-z0-9]{30}'),
             'description' => fake()->text(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }
