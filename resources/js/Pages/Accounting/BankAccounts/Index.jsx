@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import ReusableCrudInertia from "@/Components/ReusableCrud";
 import * as Yup from "yup";
@@ -15,7 +15,34 @@ const accountTypeOptions = [
 ];
 
 export default function Index() {
-  const { items, inactiveItems } = usePage().props;
+  const { items, inactiveItems, currencies = [], chartOfAccounts = [] } = usePage().props;
+
+  const currencyOptions = useMemo(
+    () =>
+      currencies.map((currency) => ({
+        value: currency.id,
+        label: `${currency.code} - ${currency.name}`,
+      })),
+    [currencies]
+  );
+
+  const chartOptions = useMemo(
+    () =>
+      chartOfAccounts.map((account) => ({
+        value: account.id,
+        label: account.code ? `${account.code} - ${account.name}` : account.name,
+      })),
+    [chartOfAccounts]
+  );
+
+  const chartIdOptions = useMemo(
+    () =>
+      chartOfAccounts.map((account) => ({
+        value: account.c_o_a_id ?? account.id,
+        label: account.code ? `${account.code} - ${account.name}` : account.name,
+      })),
+    [chartOfAccounts]
+  );
 
   return (
     <AuthenticatedLayout>
@@ -40,9 +67,9 @@ export default function Index() {
           { type: "text", name: "account_name", label: "Account Name", col: 12 },
           { type: "text", name: "account_number", label: "Account Number", col: 12 },
           { type: "select", name: "account_type", label: "Account Type", options: accountTypeOptions, col: 12 },
-          { type: "number", name: "currency_id", label: "Currency ID", col: 12 },
-          { type: "text", name: "coa_account_id", label: "COA Account ID", col: 12 },
-          { type: "number", name: "c_o_a_id", label: "COA ID", col: 12 },
+          { type: "select", name: "currency_id", label: "Currency", options: currencyOptions, col: 12 },
+          { type: "select", name: "coa_account_id", label: "COA Account", options: chartOptions, col: 12 },
+          { type: "select", name: "c_o_a_id", label: "COA", options: chartIdOptions, col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
           { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
@@ -58,9 +85,9 @@ export default function Index() {
           account_name: "",
           account_number: "",
           account_type: "",
-          currency_id: "",
-          coa_account_id: "",
-          c_o_a_id: 0,
+          currency_id: null,
+          coa_account_id: null,
+          c_o_a_id: null,
           description: "",
           active: true,
         }}

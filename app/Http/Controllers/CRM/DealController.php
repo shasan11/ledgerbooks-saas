@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use App\Models\Currency;
 use App\Models\Deal;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -77,6 +80,18 @@ class DealController extends Controller
             'items' => $items,
             'inactiveItems' => $inactiveItems,
             'query' => $request->all(),
+            'contacts' => Contact::query()
+                ->when($branchId !== null, fn($q) => $q->where('branch_id', $branchId))
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get(['id', 'name', 'code']),
+            'currencies' => Currency::query()
+                ->where('active', 1)
+                ->orderBy('code')
+                ->get(['id', 'code', 'name']),
+            'users' => User::query()
+                ->orderBy('name')
+                ->get(['id', 'name', 'email']),
         ]);
     }
 

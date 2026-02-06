@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import ReusableCrudInertia from "@/Components/ReusableCrud";
 import * as Yup from "yup";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 export default function Index() {
-  const { items, inactiveItems, query } = usePage().props;
+  const { items, inactiveItems, query, contactGroups = [] } = usePage().props;
+
+  const parentGroupOptions = useMemo(
+    () =>
+      contactGroups.map((group) => ({
+        value: group.id,
+        label: group.name,
+      })),
+    [contactGroups]
+  );
+
+  const contactGroupOptions = useMemo(
+    () =>
+      contactGroups.map((group) => ({
+        value: group.contact_group_id ?? group.id,
+        label: group.name,
+      })),
+    [contactGroups]
+  );
 
   return (
     <AuthenticatedLayout>
@@ -22,8 +40,20 @@ export default function Index() {
         ]}
         fields={[
           { type: "text", name: "name", label: "Name", required: true, col: 24 },
-          { type: "text", name: "parent_id", label: "Parent ID", col: 12 },
-          { type: "number", name: "contact_group_id", label: "Contact Group ID", col: 12 },
+          {
+            type: "select",
+            name: "parent_id",
+            label: "Parent Group",
+            options: parentGroupOptions,
+            col: 12,
+          },
+          {
+            type: "select",
+            name: "contact_group_id",
+            label: "Contact Group",
+            options: contactGroupOptions,
+            col: 12,
+          },
           { type: "textarea", name: "description", label: "Description", col: 24 },
           { type: "switch", name: "active", label: "Active", col: 24 },
         ]}
@@ -33,7 +63,7 @@ export default function Index() {
         crudInitialValues={{
           name: "",
           parent_id: "",
-          contact_group_id: 0,
+          contact_group_id: null,
           description: "",
           active: true,
         }}
