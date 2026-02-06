@@ -1,1243 +1,1543 @@
-# Generated from Django SQLite schema for Laravel Blueprint-style drafting
+# draft.yml (Laravel Blueprint)
+# Notes:
+# - Uses UUID primary keys everywhere (id: uuid).
+# - Uses "user_add" as user_add_id (FK -> users.id).
+# - Uses branch_id for branch-scoped models (FK -> branches.id).
+# - Transactional models include approval/void fields + totals + note.
+# - Add/adjust table names if your app uses custom naming.
+
 models:
-  Accountbalance:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    as_of_date: string
-    debit_total: decimal:18,6
-    credit_total: decimal:18,6
-    balance: decimal:18,6
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    account_id: uuid foreign references:accounting_coa.id
-  Accounttype:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
+
+  # -------------------------
+  # Masters / Core
+  # -------------------------
+  Currency:
+    id: uuid
+    name: string:100
+    code: string:10 unique
+    symbol: string:10 nullable
+    decimal_places: integer default:2
+    is_base: boolean default:false
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  TaxClass:
+    id: uuid
     name: string:120
-    category: string:20
-    normal_balance: string:2
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Bankaccount:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    type: string:10
-    bank_name: string:150 nullable
-    display_name: string:150
-    code: string:50 nullable
-    account_name: string:150 nullable
-    account_number: string:80 nullable
-    account_type: string:10 nullable
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    coa_account_id: uuid foreign references:accounting_coa.id nullable
-  Cashtransfer:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    transfer_no: string:50 nullable
-    transfer_date: string
-    reference_no: string:80 nullable
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    from_account_id: uuid foreign references:accounting_bankaccount.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Cashtransferitem:
-    id: uuid primary
-    amount: decimal:18,6
-    note: string:255 nullable
-    created: timestamp
-    updated: timestamp
-    cash_transfer_id: uuid foreign references:accounting_cashtransfer.id
-    to_account_id: uuid foreign references:accounting_bankaccount.id
-  Chequeregister:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    cheque_no: string:80 nullable
-    cheque_date: string nullable
-    received_date: string nullable
-    amount: decimal:18,6
-    status: string:12
-    memo: string:255 nullable
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    bank_account_id: uuid foreign references:accounting_bankaccount.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    contact_id: uuid foreign references:crm_contact.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    coa_account_id: uuid foreign references:accounting_coa.id nullable
-  Coa:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:200
-    code: string:60
-    description: string nullable
-    is_group: boolean
-    is_system: boolean
-    account_type_id: uuid foreign references:accounting_accounttype.id
-    branch_id: uuid foreign references:master_branch.id nullable
-    parent_id: uuid foreign references:accounting_coa.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Journalvoucher:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    voucher_no: string:50 nullable
-    voucher_date: string
-    narration: string nullable
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Journalvoucheritem:
-    id: uuid primary
-    dr_amount: decimal:18,6
-    cr_amount: decimal:18,6
-    line_note: string:255 nullable
-    created: timestamp
-    updated: timestamp
-    account_id: uuid foreign references:accounting_coa.id
-    journal_voucher_id: uuid foreign references:accounting_journalvoucher.id
-  Customuser:
-    id: increments
-    password: string:128
-    last_login: timestamp nullable
-    is_superuser: boolean
-    username: string:150 unique
-    first_name: string:150
-    last_name: string:150
-    is_staff: boolean
-    is_active: boolean
-    date_joined: timestamp
-    profile: string:100 nullable
-    user_type: string:50 nullable
-    email: string:254 unique
-    branch_id: char:32 nullable
-  Activity:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    type: string:20
-    subject: string:200
-    due_at: timestamp nullable
-    completed_at: timestamp nullable
-    status: string:20
-    description: string nullable
-    assigned_to_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    contact_id: uuid foreign references:crm_contact.id nullable
-    deal_id: uuid foreign references:crm_deal.id nullable
-  Contact:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    type: string:20
-    name: string:200
-    code: string:50 nullable
-    pan: string:50 nullable
-    phone: string:60 nullable
-    email: string:150 nullable
-    address: string nullable
-    accept_purchase: boolean
-    credit_terms_days: integer
-    credit_limit: decimal:18,6
-    notes: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    payable_account_id: uuid foreign references:accounting_coa.id nullable
-    receivable_account_id: uuid foreign references:accounting_coa.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    group_id: uuid foreign references:crm_contactgroup.id nullable
-  Contactgroup:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
+    code: string:30 unique
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  TaxRate:
+    id: uuid
+    tax_class_id: foreignId:tax_classes
+    name: string:120
+    rate_percent: decimal:8,4 default:0
+    inclusive: boolean default:false
+    active_from: date nullable
+    active_to: date nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: TaxClass
+
+  MasterData:
+    id: uuid
+    key: string:80 index
     name: string:150
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    parent_id: uuid foreign references:crm_contactgroup.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Deal:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    code: string:50 nullable
-    title: string:200
-    stage: string:20
-    expected_close: string nullable
-    probability: integer
-    expected_value: decimal:18,6
-    source: string:80 nullable
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    contact_id: uuid foreign references:crm_contact.id
-    currency_id: uuid foreign references:master_currency.id nullable
-    owner_id: uuid foreign references:core_customuser.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Dealitem:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    description: string:255 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    branch_id: uuid foreign references:master_branch.id nullable
-    deal_id: uuid foreign references:crm_deal.id
-    product_id: uuid foreign references:inventory_product.id nullable
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Attendance:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    date: string
-    check_in: timestamp nullable
-    check_out: timestamp nullable
-    total_minutes: integer
-    note: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    employee_id: uuid foreign references:hrm_employee.id
-  Department:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    code: string:40 nullable
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Designation:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    code: string:40 nullable
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    department_id: uuid foreign references:hrm_department.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Employee:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    code: string:60 nullable
-    first_name: string:120
-    last_name: string:120 nullable
-    phone: string:60 nullable
-    email: string:150 nullable
-    employment_type: string:20
-    join_date: string nullable
-    exit_date: string nullable
-    basic_salary: decimal:18,6
-    notes: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    department_id: uuid foreign references:hrm_department.id nullable
-    designation_id: uuid foreign references:hrm_designation.id nullable
-    user_id: uuid foreign references:core_customuser.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Employeesalarycomponent:
-    id: uuid primary
-    amount: decimal:18,6
-    active: boolean
-    created: timestamp
-    updated: timestamp
-    employee_id: uuid foreign references:hrm_employee.id
-    component_id: uuid foreign references:hrm_salarycomponent.id
-  Leaverequest:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    from_date: string
-    to_date: string
-    days: decimal:18,6
-    reason: string nullable
-    status: string:20
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    employee_id: uuid foreign references:hrm_employee.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    leave_type_id: uuid foreign references:hrm_leavetype.id
-  Leavetype:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    code: string:40 nullable
-    paid: boolean
-    max_days_per_year: integer
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Payrollperiod:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    code: string:40 nullable
-    start_date: string
-    end_date: string
-    locked: boolean
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Payslip:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    status: string:10
-    gross_total: decimal:18,6
-    deduction_total: decimal:18,6
-    net_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    employee_id: uuid foreign references:hrm_employee.id
-    payroll_period_id: uuid foreign references:hrm_payrollperiod.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Payslipline:
-    id: uuid primary
-    amount: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    payslip_id: uuid foreign references:hrm_payslip.id
-    component_id: uuid foreign references:hrm_salarycomponent.id
-  Salarycomponent:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    code: string:40 nullable
-    type: string:20
-    taxable: boolean
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Inventoryadjustment:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    adjustment_no: string:50 nullable
-    adjustment_date: string
-    reason: string:255 nullable
-    status: string:10
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    warehouse_id: uuid foreign references:inventory_warehouse.id
-  Inventoryadjustmentitem:
-    id: uuid primary
-    qty_change: decimal:18,6
-    unit_cost: decimal:18,6
-    note: string:255 nullable
-    created: timestamp
-    updated: timestamp
-    inventory_adjustment_id: uuid foreign references:inventory_inventoryadjustment.id
-    product_variant_id: uuid foreign references:inventory_productvariant.id
-  Product:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    type: string:10
-    name: string:200
-    code: string:80 nullable
-    hs_code: string:40 nullable
-    ecommerce_enabled: boolean
-    pos_enabled: boolean
-    description: string nullable
-    selling_price: decimal:18,6
-    purchase_price: decimal:18,6
-    valuation_method: string:20
-    track_inventory: boolean
-    branch_id: uuid foreign references:master_branch.id nullable
-    purchase_account_id: uuid foreign references:accounting_coa.id nullable
-    purchase_return_account_id: uuid foreign references:accounting_coa.id nullable
-    sales_account_id: uuid foreign references:accounting_coa.id nullable
-    tax_class_id: uuid foreign references:master_taxclass.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    category_id: uuid foreign references:inventory_productcategory.id nullable
-    primary_unit_id: uuid foreign references:inventory_unitofmeasurement.id nullable
-  Productcategory:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:150
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    parent_id: uuid foreign references:inventory_productcategory.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Productioninput:
-    id: uuid primary
-    qty_required: decimal:18,6
-    qty_consumed: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    production_order_id: uuid foreign references:inventory_productionorder.id
-    raw_material_variant_id: uuid foreign references:inventory_productvariant.id
-  Productionorder:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    production_no: string:50 nullable
-    production_date: string
-    status: string:20
-    planned_qty: decimal:18,6
-    produced_qty: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    finished_good_variant_id: uuid foreign references:inventory_productvariant.id
-    warehouse_id: uuid foreign references:inventory_warehouse.id
-  Productionoutput:
-    id: uuid primary
-    qty_produced: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    production_order_id: uuid foreign references:inventory_productionorder.id
-    finished_good_variant_id: uuid foreign references:inventory_productvariant.id
-  Productpicture:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    image: string:255
-    is_main: boolean
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    product_id: uuid foreign references:inventory_product.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Productvariant:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    sku: string:120 nullable
-    name: string:200 nullable
-    option_summary: string:255 nullable
-    selling_price: decimal:18,6
-    purchase_price: decimal:18,6
-    branch_id: uuid foreign references:master_branch.id nullable
-    product_id: uuid foreign references:inventory_product.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Productvariantoption:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    product_variant_id: uuid foreign references:inventory_productvariant.id
-    attribute_id: uuid foreign references:inventory_variantattribute.id
-    option_id: uuid foreign references:inventory_variantattributeoption.id
-  Unitofmeasurement:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    short_name: string:30
-    description: string nullable
-    accept_fraction: boolean
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Variantattribute:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    key: string:60
-    description: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Variantattributeoption:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    key: string:60
-    description: string nullable
-    attribute_id: uuid foreign references:inventory_variantattribute.id
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Warehouse:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    code: string:50 nullable
-    name: string:150
-    address: string nullable
-    contact_phone: string:60 nullable
-    is_default: boolean
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Warehousetransfer:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    transfer_no: string:50 nullable
-    transfer_date: string
-    status: string:10
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    from_warehouse_id: uuid foreign references:inventory_warehouse.id
-    to_warehouse_id: uuid foreign references:inventory_warehouse.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Warehousetransferitem:
-    id: uuid primary
-    qty: decimal:18,6
-    note: string:255 nullable
-    created: timestamp
-    updated: timestamp
-    product_variant_id: uuid foreign references:inventory_productvariant.id
-    warehouse_transfer_id: uuid foreign references:inventory_warehousetransfer.id
+    value: text nullable
+    is_boolean: boolean default:false
+    parent_id: foreignId:master_data nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: MasterData
+
   Branch:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
+    id: uuid
     code: string:30 unique
     name: string:150
     email: string:150 nullable
     phone: string:50 nullable
-    address: string nullable
+    address: text nullable
     country: string:80 nullable
     city: string:80 nullable
     timezone: string:64 nullable
-    is_head_office: boolean
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-  Currency:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:100
-    code: string:10 unique
-    symbol: string:10 nullable
-    decimal_places: integer
-    is_base: boolean
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Masterdata:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    key: string:80
+    currency_id: foreignId:currencies nullable
+    is_head_office: boolean default:false
+    active: boolean default:true
+    timestamps: true
+    relationships:
+      belongsTo: Currency
+
+  # -------------------------
+  # CRM
+  # -------------------------
+  ContactGroup:
+    id: uuid
+    branch_id: foreignId:branches
     name: string:150
-    value: string nullable
-    is_boolean: boolean
-    parent_id: uuid foreign references:master_masterdata.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Taxclass:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
+    parent_id: foreignId:contact_groups nullable
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, ContactGroup
+
+  Contact:
+    id: uuid
+    branch_id: foreignId:branches
+    type: enum:customer,supplier,lead index
+    name: string:200
+    code: string:50 nullable index
+    pan: string:50 nullable
+    phone: string:60 nullable
+    email: string:150 nullable
+    address: text nullable
+    group_id: foreignId:contact_groups nullable
+    accept_purchase: boolean default:false
+    credit_terms_days: integer default:0
+    credit_limit: decimal:18,2 default:0
+    receivable_account_id: foreignId:coas nullable
+    payable_account_id: foreignId:coas nullable
+    notes: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, ContactGroup
+
+  Deal:
+    id: uuid
+    branch_id: foreignId:branches
+    code: string:50 nullable index
+    title: string:200
+    contact_id: foreignId:contacts
+    stage: enum:lead,qualified,proposal,won,lost default:lead index
+    expected_close: date nullable
+    probability: integer default:0
+    currency_id: foreignId:currencies nullable
+    expected_value: decimal:18,2 default:0
+    source: string:80 nullable
+    owner_id: foreignId:users nullable
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, Contact, Currency
+
+  DealItem:
+    id: uuid
+    branch_id: foreignId:branches
+    deal_id: foreignId:deals
+    product_id: foreignId:products nullable
+    description: string:255 nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Deal, Product, TaxRate
+
+  DealActivity:
+    id: uuid
+    branch_id: foreignId:branches
+    type: enum:call,meeting,task,email,note index
+    subject: string:200
+    contact_id: foreignId:contacts nullable
+    deal_id: foreignId:deals nullable
+    due_at: datetime nullable
+    completed_at: datetime nullable
+    status: enum:pending,done,cancelled default:pending index
+    assigned_to_id: foreignId:users nullable
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Deal
+
+  # -------------------------
+  # Accounting (COA / Banking / Journals)
+  # -------------------------
+  AccountType:
+    id: uuid
     name: string:120
-    code: string:30 unique
-    description: string nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Taxrate:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    rate_percent: decimal:18,6
-    inclusive: boolean
-    active_from: string nullable
-    active_to: string nullable
-    tax_class_id: uuid foreign references:master_taxclass.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Poscashmovement:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    type: string:5
-    amount: decimal:18,6
-    reason: string:255 nullable
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    shift_id: uuid foreign references:pos_posshift.id
-  Posdiscountprofile:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    discount_type: string:10
-    value: decimal:18,6
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Posorder:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    order_no: string:60 nullable
-    order_date: timestamp
-    status: string:10
-    subtotal: decimal:18,6
-    discount_total: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    customer_id: uuid foreign references:crm_contact.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    register_id: uuid foreign references:pos_posregister.id
-    shift_id: uuid foreign references:pos_posshift.id
-  Posorderitem:
-    id: uuid primary
-    product_name: string:200 nullable
-    qty: decimal:18,6
-    unit_price: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    pos_order_id: uuid foreign references:pos_posorder.id
-    product_variant_id: uuid foreign references:inventory_productvariant.id
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-  Pospayment:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    amount: decimal:18,6
-    reference: string:120 nullable
-    status: string:10
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    pos_order_id: uuid foreign references:pos_posorder.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    method_id: uuid foreign references:pos_pospaymentmethod.id
-  Pospaymentmethod:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    name: string:120
-    type: string:20
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Posreceipt:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    receipt_no: string:60 nullable
-    printed_at: timestamp nullable
-    payload: string nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    pos_order_id: uuid foreign references:pos_posorder.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Posregister:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    code: string:40 nullable
+    category: enum:asset,liability,equity,income,expense index
+    normal_balance: enum:dr,cr index
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  COA:
+    id: uuid
+    branch_id: foreignId:branches
+    name: string:200
+    code: string:60 index
+    description: text nullable
+    parent_id: foreignId:coas nullable
+    account_type_id: foreignId:account_types
+    is_group: boolean default:false
+    is_system: boolean default:false
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, COA, AccountType
+
+  AccountBalance:
+    id: uuid
+    branch_id: foreignId:branches
+    account_id: foreignId:coas
+    as_of_date: date index
+    debit_total: decimal:18,2 default:0
+    credit_total: decimal:18,2 default:0
+    balance: decimal:18,2 default:0
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, COA
+
+  BankAccount:
+    id: uuid
+    branch_id: foreignId:branches
+    type: enum:bank,cash index
+    bank_name: string:150 nullable
+    display_name: string:150
+    code: string:50 nullable index
+    account_name: string:150 nullable
+    account_number: string:80 nullable
+    account_type: enum:saving,current nullable
+    currency_id: foreignId:currencies nullable
+    coa_account_id: foreignId:coas nullable
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, Currency, COA
+
+  CashTransfer:
+    id: uuid
+    branch_id: foreignId:branches
+    transfer_no: string:50 nullable index
+    transfer_date: date index
+    from_account_id: foreignId:bank_accounts
+    reference_no: string:80 nullable
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, BankAccount
+
+  CashTransferItem:
+    id: uuid
+    cash_transfer_id: foreignId:cash_transfers
+    to_account_id: foreignId:bank_accounts
+    amount: decimal:18,2 default:0
+    note: string:255 nullable
+    timestamps: true
+    relationships:
+      belongsTo: CashTransfer, BankAccount
+
+  ChequeRegister:
+    id: uuid
+    branch_id: foreignId:branches
+    cheque_no: string:80 nullable index
+    coa_account_id: foreignId:coas nullable
+    bank_account_id: foreignId:bank_accounts nullable
+    contact_id: foreignId:contacts nullable
+    cheque_date: date nullable
+    received_date: date nullable
+    amount: decimal:18,2 default:0
+    status: enum:issued,received,cleared,bounced,cancelled default:received index
+    memo: string:255 nullable
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, COA, BankAccount, Contact
+
+  JournalVoucher:
+    id: uuid
+    branch_id: foreignId:branches
+    voucher_no: string:50 nullable index
+    voucher_date: date index
+    narration: text nullable
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch
+
+  JournalVoucherItem:
+    id: uuid
+    journal_voucher_id: foreignId:journal_vouchers
+    account_id: foreignId:coas
+    dr_amount: decimal:18,2 default:0
+    cr_amount: decimal:18,2 default:0
+    line_note: string:255 nullable
+    timestamps: true
+    relationships:
+      belongsTo: JournalVoucher, COA
+
+  # -------------------------
+  # Inventory
+  # -------------------------
+  ProductCategory:
+    id: uuid
+    branch_id: foreignId:branches
     name: string:150
-    branch_id: uuid foreign references:master_branch.id nullable
-    cash_account_id: uuid foreign references:accounting_bankaccount.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    warehouse_id: uuid foreign references:inventory_warehouse.id nullable
-  Posreturn:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    return_no: string:60 nullable
-    return_date: timestamp
-    reason: string:255 nullable
-    status: string:10
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    customer_id: uuid foreign references:crm_contact.id nullable
-    pos_order_id: uuid foreign references:pos_posorder.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Posreturnitem:
-    id: uuid primary
-    qty: decimal:18,6
-    unit_price: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    pos_order_item_id: uuid foreign references:pos_posorderitem.id nullable
-    pos_return_id: uuid foreign references:pos_posreturn.id
-    product_variant_id: uuid foreign references:inventory_productvariant.id
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-  Possession:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    device_id: string:120 nullable
-    started_at: timestamp
-    ended_at: timestamp nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    shift_id: uuid foreign references:pos_posshift.id
-  Posshift:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    opened_at: timestamp
-    closed_at: timestamp nullable
-    opening_cash: decimal:18,6
-    closing_cash: decimal:18,6
-    status: string:10
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    closed_by_id: uuid foreign references:core_customuser.id nullable
-    opened_by_id: uuid foreign references:core_customuser.id
-    register_id: uuid foreign references:pos_posregister.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Postaxprofile:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
+    parent_id: foreignId:product_categories nullable
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, ProductCategory
+
+  UnitOfMeasurement:
+    id: uuid
+    branch_id: foreignId:branches
     name: string:120
-    branch_id: uuid foreign references:master_branch.id nullable
-    tax_rate_id: uuid foreign references:master_taxrate.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Debitnote:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    debit_note_no: string:50 nullable
-    debit_note_date: string
-    reason: string:255 nullable
-    status: string:20
-    subtotal: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    supplier_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    purchase_bill_id: uuid foreign references:purchase_purchasebill.id nullable
-  Debitnoteline:
-    id: uuid primary
-    description: string:255 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    debit_note_id: uuid foreign references:purchase_debitnote.id
-    product_id: uuid foreign references:inventory_product.id nullable
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-  Expense:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    expense_no: string:50 nullable
-    expense_date: string
-    status: string:20
-    description: string nullable
-    grand_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    expense_account_id: uuid foreign references:accounting_coa.id nullable
-    supplier_id: uuid foreign references:crm_contact.id nullable
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Expenseline:
-    id: uuid primary
-    product_name: string:200 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    expense_id: uuid foreign references:purchase_expense.id
-    product_id: uuid foreign references:inventory_product.id nullable
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-  Purchasebill:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    bill_no: string:50 nullable
-    bill_date: string
-    due_date: string nullable
-    status: string:20
-    subtotal: decimal:18,6
-    discount_total: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    balance_due: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    supplier_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Purchasebillline:
-    id: uuid primary
-    product_name: string:200 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    product_id: uuid foreign references:inventory_product.id nullable
-    purchase_bill_id: uuid foreign references:purchase_purchasebill.id
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-  Purchaseorder:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    po_no: string:50 nullable
-    po_date: string
-    expected_date: string nullable
-    status: string:20
-    subtotal: decimal:18,6
-    discount_total: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    supplier_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Purchaseorderline:
-    id: uuid primary
-    product_name: string:200 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    product_id: uuid foreign references:inventory_product.id nullable
-    purchase_order_id: uuid foreign references:purchase_purchaseorder.id
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-  Supplierpayment:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    payment_no: string:50 nullable
-    payment_date: string
-    amount: decimal:18,6
-    method: string:20
-    reference: string:100 nullable
-    status: string:20
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    bank_account_id: uuid foreign references:accounting_bankaccount.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    supplier_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Supplierpaymentline:
-    id: uuid primary
-    allocated_amount: decimal:18,6
+    short_name: string:30
+    description: text nullable
+    accept_fraction: boolean default:false
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch
+
+  VariantAttribute:
+    id: uuid
+    branch_id: foreignId:branches
+    name: string:120
+    key: string:60 index
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  VariantAttributeOption:
+    id: uuid
+    branch_id: foreignId:branches
+    attribute_id: foreignId:variant_attributes
+    name: string:120
+    key: string:60 index
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: VariantAttribute
+
+  Product:
+    id: uuid
+    branch_id: foreignId:branches
+    type: enum:goods,service index
+    name: string:200
+    code: string:80 nullable index
+    category_id: foreignId:product_categories nullable
+    tax_class_id: foreignId:tax_classes nullable
+    primary_unit_id: foreignId:unit_of_measurements nullable
+    hs_code: string:40 nullable
+    ecommerce_enabled: boolean default:false
+    pos_enabled: boolean default:false
+    description: text nullable
+    selling_price: decimal:18,6 default:0
+    purchase_price: decimal:18,6 default:0
+    sales_account_id: foreignId:coas nullable
+    purchase_account_id: foreignId:coas nullable
+    purchase_return_account_id: foreignId:coas nullable
+    valuation_method: enum:fifo,weighted_average default:fifo
+    track_inventory: boolean default:true
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, ProductCategory, TaxClass, UnitOfMeasurement, COA
+
+  ProductVariant:
+    id: uuid
+    branch_id: foreignId:branches
+    product_id: foreignId:products
+    sku: string:120 nullable index
+    name: string:200 nullable
+    option_summary: string:255 nullable
+    selling_price: decimal:18,6 default:0
+    purchase_price: decimal:18,6 default:0
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Product
+
+  ProductVariantOption:
+    id: uuid
+    product_variant_id: foreignId:product_variants
+    attribute_id: foreignId:variant_attributes
+    option_id: foreignId:variant_attribute_options
+    timestamps: true
+    relationships:
+      belongsTo: ProductVariant, VariantAttribute, VariantAttributeOption
+
+  ProductPicture:
+    id: uuid
+    branch_id: foreignId:branches
+    product_id: foreignId:products
+    image: string:255
+    is_main: boolean default:false
+    description: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Product
+
+  Warehouse:
+    id: uuid
+    branch_id: foreignId:branches
+    code: string:50 nullable index
+    name: string:150
+    address: text nullable
+    contact_phone: string:60 nullable
+    is_default: boolean default:false
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch
+
+  WarehouseTransfer:
+    id: uuid
+    branch_id: foreignId:branches
+    transfer_no: string:50 nullable index
+    transfer_date: date index
+    from_warehouse_id: foreignId:warehouses
+    to_warehouse_id: foreignId:warehouses
+    status: enum:draft,posted,void default:draft index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Warehouse
+
+  WarehouseTransferItem:
+    id: uuid
+    warehouse_transfer_id: foreignId:warehouse_transfers
+    product_variant_id: foreignId:product_variants
+    qty: decimal:18,6 default:0
     note: string:255 nullable
-    created: timestamp
-    updated: timestamp
-    purchase_bill_id: uuid foreign references:purchase_purchasebill.id
-    supplier_payment_id: uuid foreign references:purchase_supplierpayment.id
-  Creditnote:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    credit_note_no: string:50 nullable
-    credit_note_date: string
+    timestamps: true
+    relationships:
+      belongsTo: WarehouseTransfer, ProductVariant
+
+  InventoryAdjustment:
+    id: uuid
+    branch_id: foreignId:branches
+    adjustment_no: string:50 nullable index
+    adjustment_date: date index
+    warehouse_id: foreignId:warehouses
     reason: string:255 nullable
-    status: string:20
-    subtotal: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    customer_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-    invoice_id: uuid foreign references:sales_invoice.id nullable
-  Creditnoteline:
-    id: uuid primary
-    description: string:255 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    credit_note_id: uuid foreign references:sales_creditnote.id
-    product_id: uuid foreign references:inventory_product.id nullable
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
-  Customerpayment:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    payment_no: string:50 nullable
-    payment_date: string
-    amount: decimal:18,6
-    method: string:20
-    reference: string:100 nullable
-    status: string:20
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    bank_account_id: uuid foreign references:accounting_bankaccount.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    customer_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Customerpaymentallocation:
-    id: uuid primary
-    allocated_amount: decimal:18,6
+    status: enum:draft,posted,void default:draft index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Warehouse
+
+  InventoryAdjustmentItem:
+    id: uuid
+    inventory_adjustment_id: foreignId:inventory_adjustments
+    product_variant_id: foreignId:product_variants
+    qty_change: decimal:18,6 default:0
+    unit_cost: decimal:18,6 default:0
     note: string:255 nullable
-    created: timestamp
-    updated: timestamp
-    customer_payment_id: uuid foreign references:sales_customerpayment.id
-    invoice_id: uuid foreign references:sales_invoice.id
-  Invoice:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    invoice_no: string:50 nullable
-    invoice_date: string
-    due_date: string nullable
-    status: string:20
-    subtotal: decimal:18,6
-    discount_total: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    balance_due: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    customer_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Invoiceitem:
-    id: uuid primary
-    product_name: string:200 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    invoice_id: uuid foreign references:sales_invoice.id
-    product_id: uuid foreign references:inventory_product.id nullable
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
+    timestamps: true
+    relationships:
+      belongsTo: InventoryAdjustment, ProductVariant
+
+  ProductionOrder:
+    id: uuid
+    branch_id: foreignId:branches
+    production_no: string:50 nullable index
+    production_date: date index
+    warehouse_id: foreignId:warehouses
+    status: enum:draft,in_progress,completed,void default:draft index
+    finished_good_variant_id: foreignId:product_variants
+    planned_qty: decimal:18,6 default:0
+    produced_qty: decimal:18,6 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Warehouse, ProductVariant
+
+  ProductionInput:
+    id: uuid
+    production_order_id: foreignId:production_orders
+    raw_material_variant_id: foreignId:product_variants
+    qty_required: decimal:18,6 default:0
+    qty_consumed: decimal:18,6 default:0
+    timestamps: true
+    relationships:
+      belongsTo: ProductionOrder, ProductVariant
+
+  ProductionOutput:
+    id: uuid
+    production_order_id: foreignId:production_orders
+    finished_good_variant_id: foreignId:product_variants
+    qty_produced: decimal:18,6 default:0
+    timestamps: true
+    relationships:
+      belongsTo: ProductionOrder, ProductVariant
+
+  # -------------------------
+  # Sales
+  # -------------------------
   Quotation:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    quotation_no: string:50 nullable
-    quotation_date: string
-    valid_until: string nullable
-    status: string:20
-    subtotal: decimal:18,6
-    discount_total: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    customer_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Quotationitem:
-    id: uuid primary
+    id: uuid
+    branch_id: foreignId:branches
+    quotation_no: string:50 nullable index
+    quotation_date: date index
+    customer_id: foreignId:contacts
+    valid_until: date nullable
+    currency_id: foreignId:currencies nullable
+    status: enum:draft,sent,accepted,rejected,expired default:draft index
+    subtotal: decimal:18,2 default:0
+    discount_total: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency
+
+  QuotationItem:
+    id: uuid
+    quotation_id: foreignId:quotations
+    product_id: foreignId:products nullable
     product_name: string:200 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    product_id: uuid foreign references:inventory_product.id nullable
-    quotation_id: uuid foreign references:sales_quotation.id
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Quotation, Product, TaxRate
+
   Sale:
-    id: uuid primary
-    created: timestamp
-    updated: timestamp
-    active: boolean
-    is_system_generated: boolean
-    approved: boolean
-    approved_at: timestamp nullable
-    voided_reason: string nullable
-    voided_at: timestamp nullable
-    exchange_rate: decimal:18,6
-    sale_no: string:50 nullable
-    sale_date: string
-    status: string:20
-    subtotal: decimal:18,6
-    discount_total: decimal:18,6
-    tax_total: decimal:18,6
-    grand_total: decimal:18,6
-    total: decimal:18,6
-    note: string nullable
-    approved_by_id: uuid foreign references:core_customuser.id nullable
-    branch_id: uuid foreign references:master_branch.id nullable
-    currency_id: uuid foreign references:master_currency.id nullable
-    customer_id: uuid foreign references:crm_contact.id
-    user_add_id: uuid foreign references:core_customuser.id nullable
-  Saleitem:
-    id: uuid primary
+    id: uuid
+    branch_id: foreignId:branches
+    sale_no: string:50 nullable index
+    sale_date: date index
+    customer_id: foreignId:contacts
+    currency_id: foreignId:currencies nullable
+    status: enum:draft,confirmed,delivered,cancelled default:draft index
+    subtotal: decimal:18,2 default:0
+    discount_total: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency
+
+  SaleItem:
+    id: uuid
+    sale_id: foreignId:sales
+    product_id: foreignId:products nullable
     product_name: string:200 nullable
-    qty: decimal:18,6
-    rate: decimal:18,6
-    discount_amount: decimal:18,6
-    line_total: decimal:18,6
-    created: timestamp
-    updated: timestamp
-    product_id: uuid foreign references:inventory_product.id nullable
-    sale_id: uuid foreign references:sales_sale.id
-    tax_rate_id: uuid foreign references:master_taxrate.id nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Sale, Product, TaxRate
+
+  Invoice:
+    id: uuid
+    branch_id: foreignId:branches
+    invoice_no: string:50 nullable index
+    invoice_date: date index
+    customer_id: foreignId:contacts
+    due_date: date nullable
+    currency_id: foreignId:currencies nullable
+    status: enum:draft,posted,partially_paid,paid,void default:draft index
+    subtotal: decimal:18,2 default:0
+    discount_total: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    balance_due: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency
+
+  InvoiceItem:
+    id: uuid
+    invoice_id: foreignId:invoices
+    product_id: foreignId:products nullable
+    product_name: string:200 nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Invoice, Product, TaxRate
+
+  CustomerPayment:
+    id: uuid
+    branch_id: foreignId:branches
+    payment_no: string:50 nullable index
+    payment_date: date index
+    customer_id: foreignId:contacts
+    currency_id: foreignId:currencies nullable
+    amount: decimal:18,2 default:0
+    method: enum:cash,bank,cheque,online default:cash index
+    bank_account_id: foreignId:bank_accounts nullable
+    reference: string:100 nullable
+    status: enum:draft,posted,void default:draft index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency, BankAccount
+
+  CustomerPaymentAllocation:
+    id: uuid
+    customer_payment_id: foreignId:customer_payments
+    invoice_id: foreignId:invoices
+    allocated_amount: decimal:18,2 default:0
+    note: string:255 nullable
+    timestamps: true
+    relationships:
+      belongsTo: CustomerPayment, Invoice
+
+  CreditNote:
+    id: uuid
+    branch_id: foreignId:branches
+    credit_note_no: string:50 nullable index
+    credit_note_date: date index
+    customer_id: foreignId:contacts
+    invoice_id: foreignId:invoices nullable
+    currency_id: foreignId:currencies nullable
+    reason: string:255 nullable
+    status: enum:draft,posted,void default:draft index
+    subtotal: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Invoice, Currency
+
+  CreditNoteLine:
+    id: uuid
+    credit_note_id: foreignId:credit_notes
+    product_id: foreignId:products nullable
+    description: string:255 nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: CreditNote, Product, TaxRate
+
+  # -------------------------
+  # Purchase
+  # -------------------------
+  PurchaseOrder:
+    id: uuid
+    branch_id: foreignId:branches
+    po_no: string:50 nullable index
+    po_date: date index
+    supplier_id: foreignId:contacts
+    expected_date: date nullable
+    currency_id: foreignId:currencies nullable
+    status: enum:draft,sent,confirmed,received,cancelled default:draft index
+    subtotal: decimal:18,2 default:0
+    discount_total: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency
+
+  PurchaseOrderLine:
+    id: uuid
+    purchase_order_id: foreignId:purchase_orders
+    product_id: foreignId:products nullable
+    product_name: string:200 nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: PurchaseOrder, Product, TaxRate
+
+  PurchaseBill:
+    id: uuid
+    branch_id: foreignId:branches
+    bill_no: string:50 nullable index
+    bill_date: date index
+    supplier_id: foreignId:contacts
+    due_date: date nullable
+    currency_id: foreignId:currencies nullable
+    status: enum:draft,posted,partially_paid,paid,void default:draft index
+    subtotal: decimal:18,2 default:0
+    discount_total: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    balance_due: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency
+
+  PurchaseBillLine:
+    id: uuid
+    purchase_bill_id: foreignId:purchase_bills
+    product_id: foreignId:products nullable
+    product_name: string:200 nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: PurchaseBill, Product, TaxRate
+
+  Expense:
+    id: uuid
+    branch_id: foreignId:branches
+    expense_no: string:50 nullable index
+    expense_date: date index
+    supplier_id: foreignId:contacts nullable
+    currency_id: foreignId:currencies nullable
+    status: enum:draft,posted,void default:draft index
+    description: text nullable
+    grand_total: decimal:18,2 default:0
+    expense_account_id: foreignId:coas nullable
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency, COA
+
+  ExpenseLine:
+    id: uuid
+    expense_id: foreignId:expenses
+    product_id: foreignId:products nullable
+    product_name: string:200 nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Expense, Product, TaxRate
+
+  SupplierPayment:
+    id: uuid
+    branch_id: foreignId:branches
+    payment_no: string:50 nullable index
+    payment_date: date index
+    supplier_id: foreignId:contacts
+    currency_id: foreignId:currencies nullable
+    amount: decimal:18,2 default:0
+    method: enum:cash,bank,cheque,online default:cash index
+    bank_account_id: foreignId:bank_accounts nullable
+    reference: string:100 nullable
+    status: enum:draft,posted,void default:draft index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, Currency, BankAccount
+
+  SupplierPaymentLine:
+    id: uuid
+    supplier_payment_id: foreignId:supplier_payments
+    purchase_bill_id: foreignId:purchase_bills
+    allocated_amount: decimal:18,2 default:0
+    note: string:255 nullable
+    timestamps: true
+    relationships:
+      belongsTo: SupplierPayment, PurchaseBill
+
+  DebitNote:
+    id: uuid
+    branch_id: foreignId:branches
+    debit_note_no: string:50 nullable index
+    debit_note_date: date index
+    supplier_id: foreignId:contacts
+    purchase_bill_id: foreignId:purchase_bills nullable
+    currency_id: foreignId:currencies nullable
+    reason: string:255 nullable
+    status: enum:draft,posted,void default:draft index
+    subtotal: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Contact, PurchaseBill, Currency
+
+  DebitNoteLine:
+    id: uuid
+    debit_note_id: foreignId:debit_notes
+    product_id: foreignId:products nullable
+    description: string:255 nullable
+    qty: decimal:18,6 default:1
+    rate: decimal:18,6 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: DebitNote, Product, TaxRate
+
+  # -------------------------
+  # Ecommerce
+  # -------------------------
+  Store:
+    id: uuid
+    branch_id: foreignId:branches
+    name: string:150
+    domain: string:180 nullable
+    currency_id: foreignId:currencies nullable
+    tax_inclusive: boolean default:false
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, Currency
+
+  CustomerProfile:
+    id: uuid
+    branch_id: foreignId:branches
+    user_id: foreignId:users nullable
+    contact_id: foreignId:contacts nullable
+    phone: string:60 nullable
+    dob: date nullable
+    notes: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Branch, User, Contact
+
+  CustomerAddress:
+    id: uuid
+    branch_id: foreignId:branches
+    customer_profile_id: foreignId:customer_profiles
+    label: string:80 nullable
+    full_name: string:180
+    phone: string:60 nullable
+    address1: string:200
+    address2: string:200 nullable
+    city: string:80 nullable
+    state: string:80 nullable
+    country: string:80 nullable
+    postal_code: string:30 nullable
+    is_default: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: CustomerProfile
+
+  Cart:
+    id: uuid
+    branch_id: foreignId:branches
+    store_id: foreignId:stores
+    customer_profile_id: foreignId:customer_profiles nullable
+    session_key: string:120 nullable index
+    currency_id: foreignId:currencies nullable
+    subtotal: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Store, CustomerProfile, Currency
+
+  CartItem:
+    id: uuid
+    cart_id: foreignId:carts
+    product_variant_id: foreignId:product_variants
+    qty: decimal:18,6 default:1
+    unit_price: decimal:18,6 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Cart, ProductVariant, TaxRate
+
+  Order:
+    id: uuid
+    branch_id: foreignId:branches
+    store_id: foreignId:stores
+    order_no: string:60 nullable index
+    customer_profile_id: foreignId:customer_profiles nullable
+    customer_email: string:150 nullable
+    shipping_address_id: foreignId:customer_addresses nullable
+    billing_address_id: foreignId:customer_addresses nullable
+    currency_id: foreignId:currencies nullable
+    status: enum:pending,paid,processing,shipped,delivered,cancelled,refunded default:pending index
+    subtotal: decimal:18,2 default:0
+    discount_total: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    shipping_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Store, CustomerProfile, CustomerAddress, Currency
+
+  OrderItem:
+    id: uuid
+    order_id: foreignId:orders
+    product_variant_id: foreignId:product_variants
+    product_name: string:200 nullable
+    qty: decimal:18,6 default:1
+    unit_price: decimal:18,6 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Order, ProductVariant, TaxRate
+
+  OrderStatusHistory:
+    id: uuid
+    order_id: foreignId:orders
+    from_status: string:50 nullable
+    to_status: string:50
+    changed_at: datetime
+    changed_by_id: foreignId:users nullable
+    note: string:255 nullable
+    timestamps: true
+    relationships:
+      belongsTo: Order, User
+
+  ShippingMethod:
+    id: uuid
+    branch_id: foreignId:branches
+    name: string:150
+    code: string:60 nullable index
+    description: text nullable
+    price: decimal:18,2 default:0
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  Shipment:
+    id: uuid
+    branch_id: foreignId:branches
+    shipment_no: string:60 nullable index
+    order_id: foreignId:orders
+    shipping_method_id: foreignId:shipping_methods nullable
+    tracking_no: string:120 nullable index
+    shipped_at: datetime nullable
+    delivered_at: datetime nullable
+    status: enum:packed,shipped,delivered,returned default:packed index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Order, ShippingMethod
+
+  ShipmentItem:
+    id: uuid
+    shipment_id: foreignId:shipments
+    order_item_id: foreignId:order_items
+    qty: decimal:18,6 default:1
+    timestamps: true
+    relationships:
+      belongsTo: Shipment, OrderItem
+
+  OrderPayment:
+    id: uuid
+    branch_id: foreignId:branches
+    order_id: foreignId:orders
+    amount: decimal:18,2 default:0
+    currency_id: foreignId:currencies nullable
+    method: enum:card,bank,cod,wallet default:card index
+    status: enum:pending,success,failed,refunded default:pending index
+    reference: string:120 nullable
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Order, Currency
+
+  PaymentGatewayTransaction:
+    id: uuid
+    branch_id: foreignId:branches
+    order_payment_id: foreignId:order_payments
+    gateway: string:80
+    transaction_id: string:150 index
+    request_payload: longtext nullable
+    response_payload: longtext nullable
+    status: string:50 nullable index
+    processed_at: datetime nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: OrderPayment
+
+  Coupon:
+    id: uuid
+    branch_id: foreignId:branches
+    code: string:40 unique
+    name: string:120
+    discount_type: enum:percent,fixed default:percent
+    discount_value: decimal:18,6 default:0
+    min_order_amount: decimal:18,2 default:0
+    max_uses: integer nullable
+    max_uses_per_customer: integer nullable
+    valid_from: datetime nullable
+    valid_to: datetime nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  CouponRedemption:
+    id: uuid
+    coupon_id: foreignId:coupons
+    customer_profile_id: foreignId:customer_profiles nullable
+    order_id: foreignId:orders nullable
+    redeemed_at: datetime
+    timestamps: true
+    relationships:
+      belongsTo: Coupon, CustomerProfile, Order
+
+  Refund:
+    id: uuid
+    branch_id: foreignId:branches
+    refund_no: string:60 nullable index
+    refund_date: date index
+    order_id: foreignId:orders
+    amount: decimal:18,2 default:0
+    reason: string:255 nullable
+    status: enum:draft,posted,void default:draft index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Order
+
+  RefundItem:
+    id: uuid
+    refund_id: foreignId:refunds
+    order_item_id: foreignId:order_items
+    qty: decimal:18,6 default:1
+    amount: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: Refund, OrderItem
+
+  ReturnRequest:
+    id: uuid
+    branch_id: foreignId:branches
+    request_no: string:60 nullable index
+    request_date: date index
+    order_id: foreignId:orders
+    reason: string:255 nullable
+    status: enum:requested,approved,rejected,received,refunded default:requested index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Order
+
+  ProductReview:
+    id: uuid
+    branch_id: foreignId:branches
+    store_id: foreignId:stores
+    product_id: foreignId:products
+    customer_profile_id: foreignId:customer_profiles nullable
+    rating: tinyInteger default:5
+    title: string:120 nullable
+    review: text nullable
+    is_approved: boolean default:false
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Store, Product, CustomerProfile
+
+  # -------------------------
+  # POS
+  # -------------------------
+  POSRegister:
+    id: uuid
+    branch_id: foreignId:branches
+    code: string:40 nullable index
+    name: string:150
+    warehouse_id: foreignId:warehouses nullable
+    cash_account_id: foreignId:bank_accounts nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: Warehouse, BankAccount
+
+  POSShift:
+    id: uuid
+    branch_id: foreignId:branches
+    register_id: foreignId:pos_registers
+    opened_at: datetime
+    opened_by_id: foreignId:users
+    closed_at: datetime nullable
+    closed_by_id: foreignId:users nullable
+    opening_cash: decimal:18,2 default:0
+    closing_cash: decimal:18,2 default:0
+    status: enum:open,closed default:open index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: POSRegister, User
+
+  POSSession:
+    id: uuid
+    branch_id: foreignId:branches
+    shift_id: foreignId:pos_shifts
+    device_id: string:120 nullable index
+    started_at: datetime
+    ended_at: datetime nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: POSShift
+
+  POSCashMovement:
+    id: uuid
+    branch_id: foreignId:branches
+    shift_id: foreignId:pos_shifts
+    type: enum:in,out index
+    amount: decimal:18,2 default:0
+    reason: string:255 nullable
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: POSShift
+
+  POSPaymentMethod:
+    id: uuid
+    branch_id: foreignId:branches
+    name: string:120
+    type: enum:cash,card,bank,wallet,cod index
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  POSOrder:
+    id: uuid
+    branch_id: foreignId:branches
+    order_no: string:60 nullable index
+    order_date: datetime index
+    register_id: foreignId:pos_registers
+    shift_id: foreignId:pos_shifts
+    customer_id: foreignId:contacts nullable
+    status: enum:draft,posted,void default:draft index
+    subtotal: decimal:18,2 default:0
+    discount_total: decimal:18,2 default:0
+    tax_total: decimal:18,2 default:0
+    grand_total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: POSRegister, POSShift, Contact
+
+  POSOrderItem:
+    id: uuid
+    pos_order_id: foreignId:pos_orders
+    product_variant_id: foreignId:product_variants
+    product_name: string:200 nullable
+    qty: decimal:18,6 default:1
+    unit_price: decimal:18,6 default:0
+    discount_amount: decimal:18,2 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: POSOrder, ProductVariant, TaxRate
+
+  POSPayment:
+    id: uuid
+    branch_id: foreignId:branches
+    pos_order_id: foreignId:pos_orders
+    method_id: foreignId:pos_payment_methods
+    amount: decimal:18,2 default:0
+    reference: string:120 nullable
+    status: enum:posted,void default:posted index
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    total: decimal:18,2 default:0
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: POSOrder, POSPaymentMethod
+
+  POSReceipt:
+    id: uuid
+    branch_id: foreignId:branches
+    pos_order_id: foreignId:pos_orders
+    receipt_no: string:60 nullable index
+    printed_at: datetime nullable
+    payload: longtext nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: POSOrder
+
+  POSReturn:
+    id: uuid
+    branch_id: foreignId:branches
+    return_no: string:60 nullable index
+    return_date: datetime index
+    pos_order_id: foreignId:pos_orders nullable
+    customer_id: foreignId:contacts nullable
+    reason: string:255 nullable
+    status: enum:draft,posted,void default:draft index
+    total: decimal:18,2 default:0
+    approved: boolean default:false
+    approved_at: datetime nullable
+    approved_by_id: foreignId:users nullable
+    voided_reason: string:255 nullable
+    voided_at: datetime nullable
+    exchange_rate: decimal:18,6 default:1
+    note: text nullable
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: POSOrder, Contact
+
+  POSReturnItem:
+    id: uuid
+    pos_return_id: foreignId:pos_returns
+    pos_order_item_id: foreignId:pos_order_items nullable
+    product_variant_id: foreignId:product_variants
+    qty: decimal:18,6 default:1
+    unit_price: decimal:18,6 default:0
+    tax_rate_id: foreignId:tax_rates nullable
+    line_total: decimal:18,2 default:0
+    timestamps: true
+    relationships:
+      belongsTo: POSReturn, POSOrderItem, ProductVariant, TaxRate
+
+  POSDiscountProfile:
+    id: uuid
+    branch_id: foreignId:branches
+    name: string:120
+    discount_type: enum:percent,fixed default:percent
+    value: decimal:18,6 default:0
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+
+  POSTaxProfile:
+    id: uuid
+    branch_id: foreignId:branches
+    name: string:120
+    tax_rate_id: foreignId:tax_rates
+    user_add_id: foreignId:users nullable
+    active: boolean default:true
+    is_system_generated: boolean default:false
+    timestamps: true
+    relationships:
+      belongsTo: TaxRate
+ 

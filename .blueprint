@@ -1,2 +1,351 @@
+created:
+    - database/factories/CurrencyFactory.php
+    - database/factories/TaxClassFactory.php
+    - database/factories/TaxRateFactory.php
+    - database/factories/MasterDataFactory.php
+    - database/factories/BranchFactory.php
+    - database/factories/ContactGroupFactory.php
+    - database/factories/ContactFactory.php
+    - database/factories/DealFactory.php
+    - database/factories/DealItemFactory.php
+    - database/factories/DealActivityFactory.php
+    - database/factories/AccountTypeFactory.php
+    - database/factories/COAFactory.php
+    - database/factories/AccountBalanceFactory.php
+    - database/factories/BankAccountFactory.php
+    - database/factories/CashTransferFactory.php
+    - database/factories/CashTransferItemFactory.php
+    - database/factories/ChequeRegisterFactory.php
+    - database/factories/JournalVoucherFactory.php
+    - database/factories/JournalVoucherItemFactory.php
+    - database/factories/ProductCategoryFactory.php
+    - database/factories/UnitOfMeasurementFactory.php
+    - database/factories/VariantAttributeFactory.php
+    - database/factories/VariantAttributeOptionFactory.php
+    - database/factories/ProductFactory.php
+    - database/factories/ProductVariantFactory.php
+    - database/factories/ProductVariantOptionFactory.php
+    - database/factories/ProductPictureFactory.php
+    - database/factories/WarehouseFactory.php
+    - database/factories/WarehouseTransferFactory.php
+    - database/factories/WarehouseTransferItemFactory.php
+    - database/factories/InventoryAdjustmentFactory.php
+    - database/factories/InventoryAdjustmentItemFactory.php
+    - database/factories/ProductionOrderFactory.php
+    - database/factories/ProductionInputFactory.php
+    - database/factories/ProductionOutputFactory.php
+    - database/factories/QuotationFactory.php
+    - database/factories/QuotationItemFactory.php
+    - database/factories/SaleFactory.php
+    - database/factories/SaleItemFactory.php
+    - database/factories/InvoiceFactory.php
+    - database/factories/InvoiceItemFactory.php
+    - database/factories/CustomerPaymentFactory.php
+    - database/factories/CustomerPaymentAllocationFactory.php
+    - database/factories/CreditNoteFactory.php
+    - database/factories/CreditNoteLineFactory.php
+    - database/factories/PurchaseOrderFactory.php
+    - database/factories/PurchaseOrderLineFactory.php
+    - database/factories/PurchaseBillFactory.php
+    - database/factories/PurchaseBillLineFactory.php
+    - database/factories/ExpenseFactory.php
+    - database/factories/ExpenseLineFactory.php
+    - database/factories/SupplierPaymentFactory.php
+    - database/factories/SupplierPaymentLineFactory.php
+    - database/factories/DebitNoteFactory.php
+    - database/factories/DebitNoteLineFactory.php
+    - database/factories/StoreFactory.php
+    - database/factories/CustomerProfileFactory.php
+    - database/factories/CustomerAddressFactory.php
+    - database/factories/CartFactory.php
+    - database/factories/CartItemFactory.php
+    - database/factories/OrderFactory.php
+    - database/factories/OrderItemFactory.php
+    - database/factories/OrderStatusHistoryFactory.php
+    - database/factories/ShippingMethodFactory.php
+    - database/factories/ShipmentFactory.php
+    - database/factories/ShipmentItemFactory.php
+    - database/factories/OrderPaymentFactory.php
+    - database/factories/PaymentGatewayTransactionFactory.php
+    - database/factories/CouponFactory.php
+    - database/factories/CouponRedemptionFactory.php
+    - database/factories/RefundFactory.php
+    - database/factories/RefundItemFactory.php
+    - database/factories/ReturnRequestFactory.php
+    - database/factories/ProductReviewFactory.php
+    - database/factories/POSRegisterFactory.php
+    - database/factories/POSShiftFactory.php
+    - database/factories/POSSessionFactory.php
+    - database/factories/POSCashMovementFactory.php
+    - database/factories/POSPaymentMethodFactory.php
+    - database/factories/POSOrderFactory.php
+    - database/factories/POSOrderItemFactory.php
+    - database/factories/POSPaymentFactory.php
+    - database/factories/POSReceiptFactory.php
+    - database/factories/POSReturnFactory.php
+    - database/factories/POSReturnItemFactory.php
+    - database/factories/POSDiscountProfileFactory.php
+    - database/factories/POSTaxProfileFactory.php
+    - database/migrations/2026_02_06_032744_create_currencies_table.php
+    - database/migrations/2026_02_06_032745_create_tax_classes_table.php
+    - database/migrations/2026_02_06_032746_create_tax_rates_table.php
+    - database/migrations/2026_02_06_032747_create_master_data_table.php
+    - database/migrations/2026_02_06_032748_create_branches_table.php
+    - database/migrations/2026_02_06_032749_create_contact_groups_table.php
+    - database/migrations/2026_02_06_032750_create_contacts_table.php
+    - database/migrations/2026_02_06_032751_create_deals_table.php
+    - database/migrations/2026_02_06_032752_create_deal_items_table.php
+    - database/migrations/2026_02_06_032753_create_deal_activities_table.php
+    - database/migrations/2026_02_06_032754_create_account_types_table.php
+    - database/migrations/2026_02_06_032755_create_c_o_a_s_table.php
+    - database/migrations/2026_02_06_032756_create_account_balances_table.php
+    - database/migrations/2026_02_06_032757_create_bank_accounts_table.php
+    - database/migrations/2026_02_06_032758_create_cash_transfers_table.php
+    - database/migrations/2026_02_06_032759_create_cash_transfer_items_table.php
+    - database/migrations/2026_02_06_032800_create_cheque_registers_table.php
+    - database/migrations/2026_02_06_032801_create_journal_vouchers_table.php
+    - database/migrations/2026_02_06_032802_create_journal_voucher_items_table.php
+    - database/migrations/2026_02_06_032803_create_product_categories_table.php
+    - database/migrations/2026_02_06_032804_create_unit_of_measurements_table.php
+    - database/migrations/2026_02_06_032805_create_variant_attributes_table.php
+    - database/migrations/2026_02_06_032806_create_variant_attribute_options_table.php
+    - database/migrations/2026_02_06_032807_create_products_table.php
+    - database/migrations/2026_02_06_032808_create_product_variants_table.php
+    - database/migrations/2026_02_06_032809_create_product_variant_options_table.php
+    - database/migrations/2026_02_06_032810_create_product_pictures_table.php
+    - database/migrations/2026_02_06_032811_create_warehouses_table.php
+    - database/migrations/2026_02_06_032812_create_warehouse_transfers_table.php
+    - database/migrations/2026_02_06_032813_create_warehouse_transfer_items_table.php
+    - database/migrations/2026_02_06_032814_create_inventory_adjustments_table.php
+    - database/migrations/2026_02_06_032815_create_inventory_adjustment_items_table.php
+    - database/migrations/2026_02_06_032816_create_production_orders_table.php
+    - database/migrations/2026_02_06_032817_create_production_inputs_table.php
+    - database/migrations/2026_02_06_032818_create_production_outputs_table.php
+    - database/migrations/2026_02_06_032819_create_quotations_table.php
+    - database/migrations/2026_02_06_032820_create_quotation_items_table.php
+    - database/migrations/2026_02_06_032821_create_sales_table.php
+    - database/migrations/2026_02_06_032822_create_sale_items_table.php
+    - database/migrations/2026_02_06_032823_create_invoices_table.php
+    - database/migrations/2026_02_06_032824_create_invoice_items_table.php
+    - database/migrations/2026_02_06_032825_create_customer_payments_table.php
+    - database/migrations/2026_02_06_032826_create_customer_payment_allocations_table.php
+    - database/migrations/2026_02_06_032827_create_credit_notes_table.php
+    - database/migrations/2026_02_06_032828_create_credit_note_lines_table.php
+    - database/migrations/2026_02_06_032829_create_purchase_orders_table.php
+    - database/migrations/2026_02_06_032830_create_purchase_order_lines_table.php
+    - database/migrations/2026_02_06_032831_create_purchase_bills_table.php
+    - database/migrations/2026_02_06_032832_create_purchase_bill_lines_table.php
+    - database/migrations/2026_02_06_032833_create_expenses_table.php
+    - database/migrations/2026_02_06_032834_create_expense_lines_table.php
+    - database/migrations/2026_02_06_032835_create_supplier_payments_table.php
+    - database/migrations/2026_02_06_032836_create_supplier_payment_lines_table.php
+    - database/migrations/2026_02_06_032837_create_debit_notes_table.php
+    - database/migrations/2026_02_06_032838_create_debit_note_lines_table.php
+    - database/migrations/2026_02_06_032839_create_stores_table.php
+    - database/migrations/2026_02_06_032840_create_customer_profiles_table.php
+    - database/migrations/2026_02_06_032841_create_customer_addresses_table.php
+    - database/migrations/2026_02_06_032842_create_carts_table.php
+    - database/migrations/2026_02_06_032843_create_cart_items_table.php
+    - database/migrations/2026_02_06_032844_create_orders_table.php
+    - database/migrations/2026_02_06_032845_create_order_items_table.php
+    - database/migrations/2026_02_06_032846_create_order_status_histories_table.php
+    - database/migrations/2026_02_06_032847_create_shipping_methods_table.php
+    - database/migrations/2026_02_06_032848_create_shipments_table.php
+    - database/migrations/2026_02_06_032849_create_shipment_items_table.php
+    - database/migrations/2026_02_06_032850_create_order_payments_table.php
+    - database/migrations/2026_02_06_032851_create_payment_gateway_transactions_table.php
+    - database/migrations/2026_02_06_032852_create_coupons_table.php
+    - database/migrations/2026_02_06_032853_create_coupon_redemptions_table.php
+    - database/migrations/2026_02_06_032854_create_refunds_table.php
+    - database/migrations/2026_02_06_032855_create_refund_items_table.php
+    - database/migrations/2026_02_06_032856_create_return_requests_table.php
+    - database/migrations/2026_02_06_032857_create_product_reviews_table.php
+    - database/migrations/2026_02_06_032858_create_p_o_s_registers_table.php
+    - database/migrations/2026_02_06_032859_create_p_o_s_shifts_table.php
+    - database/migrations/2026_02_06_032900_create_p_o_s_sessions_table.php
+    - database/migrations/2026_02_06_032901_create_p_o_s_cash_movements_table.php
+    - database/migrations/2026_02_06_032902_create_p_o_s_payment_methods_table.php
+    - database/migrations/2026_02_06_032903_create_p_o_s_orders_table.php
+    - database/migrations/2026_02_06_032904_create_p_o_s_order_items_table.php
+    - database/migrations/2026_02_06_032905_create_p_o_s_payments_table.php
+    - database/migrations/2026_02_06_032906_create_p_o_s_receipts_table.php
+    - database/migrations/2026_02_06_032907_create_p_o_s_returns_table.php
+    - database/migrations/2026_02_06_032908_create_p_o_s_return_items_table.php
+    - database/migrations/2026_02_06_032909_create_p_o_s_discount_profiles_table.php
+    - database/migrations/2026_02_06_032910_create_p_o_s_tax_profiles_table.php
+    - app/Models/Currency.php
+    - app/Models/TaxClass.php
+    - app/Models/TaxRate.php
+    - app/Models/MasterData.php
+    - app/Models/Branch.php
+    - app/Models/ContactGroup.php
+    - app/Models/Contact.php
+    - app/Models/Deal.php
+    - app/Models/DealItem.php
+    - app/Models/DealActivity.php
+    - app/Models/AccountType.php
+    - app/Models/COA.php
+    - app/Models/AccountBalance.php
+    - app/Models/BankAccount.php
+    - app/Models/CashTransfer.php
+    - app/Models/CashTransferItem.php
+    - app/Models/ChequeRegister.php
+    - app/Models/JournalVoucher.php
+    - app/Models/JournalVoucherItem.php
+    - app/Models/ProductCategory.php
+    - app/Models/UnitOfMeasurement.php
+    - app/Models/VariantAttribute.php
+    - app/Models/VariantAttributeOption.php
+    - app/Models/Product.php
+    - app/Models/ProductVariant.php
+    - app/Models/ProductVariantOption.php
+    - app/Models/ProductPicture.php
+    - app/Models/Warehouse.php
+    - app/Models/WarehouseTransfer.php
+    - app/Models/WarehouseTransferItem.php
+    - app/Models/InventoryAdjustment.php
+    - app/Models/InventoryAdjustmentItem.php
+    - app/Models/ProductionOrder.php
+    - app/Models/ProductionInput.php
+    - app/Models/ProductionOutput.php
+    - app/Models/Quotation.php
+    - app/Models/QuotationItem.php
+    - app/Models/Sale.php
+    - app/Models/SaleItem.php
+    - app/Models/Invoice.php
+    - app/Models/InvoiceItem.php
+    - app/Models/CustomerPayment.php
+    - app/Models/CustomerPaymentAllocation.php
+    - app/Models/CreditNote.php
+    - app/Models/CreditNoteLine.php
+    - app/Models/PurchaseOrder.php
+    - app/Models/PurchaseOrderLine.php
+    - app/Models/PurchaseBill.php
+    - app/Models/PurchaseBillLine.php
+    - app/Models/Expense.php
+    - app/Models/ExpenseLine.php
+    - app/Models/SupplierPayment.php
+    - app/Models/SupplierPaymentLine.php
+    - app/Models/DebitNote.php
+    - app/Models/DebitNoteLine.php
+    - app/Models/Store.php
+    - app/Models/CustomerProfile.php
+    - app/Models/CustomerAddress.php
+    - app/Models/Cart.php
+    - app/Models/CartItem.php
+    - app/Models/Order.php
+    - app/Models/OrderItem.php
+    - app/Models/OrderStatusHistory.php
+    - app/Models/ShippingMethod.php
+    - app/Models/Shipment.php
+    - app/Models/ShipmentItem.php
+    - app/Models/OrderPayment.php
+    - app/Models/PaymentGatewayTransaction.php
+    - app/Models/Coupon.php
+    - app/Models/CouponRedemption.php
+    - app/Models/Refund.php
+    - app/Models/RefundItem.php
+    - app/Models/ReturnRequest.php
+    - app/Models/ProductReview.php
+    - app/Models/POSRegister.php
+    - app/Models/POSShift.php
+    - app/Models/POSSession.php
+    - app/Models/POSCashMovement.php
+    - app/Models/POSPaymentMethod.php
+    - app/Models/POSOrder.php
+    - app/Models/POSOrderItem.php
+    - app/Models/POSPayment.php
+    - app/Models/POSReceipt.php
+    - app/Models/POSReturn.php
+    - app/Models/POSReturnItem.php
+    - app/Models/POSDiscountProfile.php
+    - app/Models/POSTaxProfile.php
 models:
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable' }
+    Currency: { id: uuid, name: 'string:100', code: 'string:10 unique', symbol: 'string:10 nullable', decimal_places: 'integer default:2', is_base: 'boolean default:false', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    TaxClass: { id: uuid, name: 'string:120', code: 'string:30 unique', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    TaxRate: { id: uuid, tax_class_id: 'foreignId:tax_classes', name: 'string:120', rate_percent: 'decimal:8,4 default:0', inclusive: 'boolean default:false', active_from: 'date nullable', active_to: 'date nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: TaxClass } }
+    MasterData: { id: uuid, key: 'string:80 index', name: 'string:150', value: 'text nullable', is_boolean: 'boolean default:false', parent_id: 'foreignId:master_data nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: MasterData } }
+    Branch: { id: uuid, code: 'string:30 unique', name: 'string:150', email: 'string:150 nullable', phone: 'string:50 nullable', address: 'text nullable', country: 'string:80 nullable', city: 'string:80 nullable', timezone: 'string:64 nullable', currency_id: 'foreignId:currencies nullable', is_head_office: 'boolean default:false', active: 'boolean default:true', timestamps: timestamps, relationships: { belongsTo: Currency } }
+    ContactGroup: { id: uuid, branch_id: 'foreignId:branches', name: 'string:150', parent_id: 'foreignId:contact_groups nullable', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, ContactGroup' } }
+    Contact: { id: uuid, branch_id: 'foreignId:branches', type: 'enum:customer,supplier,lead index', name: 'string:200', code: 'string:50 nullable index', pan: 'string:50 nullable', phone: 'string:60 nullable', email: 'string:150 nullable', address: 'text nullable', group_id: 'foreignId:contact_groups nullable', accept_purchase: 'boolean default:false', credit_terms_days: 'integer default:0', credit_limit: 'decimal:18,2 default:0', receivable_account_id: 'foreignId:coas nullable', payable_account_id: 'foreignId:coas nullable', notes: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, ContactGroup' } }
+    Deal: { id: uuid, branch_id: 'foreignId:branches', code: 'string:50 nullable index', title: 'string:200', contact_id: 'foreignId:contacts', stage: 'enum:lead,qualified,proposal,won,lost default:lead index', expected_close: 'date nullable', probability: 'integer default:0', currency_id: 'foreignId:currencies nullable', expected_value: 'decimal:18,2 default:0', source: 'string:80 nullable', owner_id: 'foreignId:users nullable', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, Contact, Currency' } }
+    DealItem: { id: uuid, branch_id: 'foreignId:branches', deal_id: 'foreignId:deals', product_id: 'foreignId:products nullable', description: 'string:255 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Deal, Product, TaxRate' } }
+    DealActivity: { id: uuid, branch_id: 'foreignId:branches', type: 'enum:call,meeting,task,email,note index', subject: 'string:200', contact_id: 'foreignId:contacts nullable', deal_id: 'foreignId:deals nullable', due_at: 'datetime nullable', completed_at: 'datetime nullable', status: 'enum:pending,done,cancelled default:pending index', assigned_to_id: 'foreignId:users nullable', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Deal' } }
+    AccountType: { id: uuid, name: 'string:120', category: 'enum:asset,liability,equity,income,expense index', normal_balance: 'enum:dr,cr index', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    COA: { id: uuid, branch_id: 'foreignId:branches', name: 'string:200', code: 'string:60 index', description: 'text nullable', parent_id: 'foreignId:coas nullable', account_type_id: 'foreignId:account_types', is_group: 'boolean default:false', is_system: 'boolean default:false', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, COA, AccountType' } }
+    AccountBalance: { id: uuid, branch_id: 'foreignId:branches', account_id: 'foreignId:coas', as_of_date: 'date index', debit_total: 'decimal:18,2 default:0', credit_total: 'decimal:18,2 default:0', balance: 'decimal:18,2 default:0', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, COA' } }
+    BankAccount: { id: uuid, branch_id: 'foreignId:branches', type: 'enum:bank,cash index', bank_name: 'string:150 nullable', display_name: 'string:150', code: 'string:50 nullable index', account_name: 'string:150 nullable', account_number: 'string:80 nullable', account_type: 'enum:saving,current nullable', currency_id: 'foreignId:currencies nullable', coa_account_id: 'foreignId:coas nullable', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, Currency, COA' } }
+    CashTransfer: { id: uuid, branch_id: 'foreignId:branches', transfer_no: 'string:50 nullable index', transfer_date: 'date index', from_account_id: 'foreignId:bank_accounts', reference_no: 'string:80 nullable', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, BankAccount' } }
+    CashTransferItem: { id: uuid, cash_transfer_id: 'foreignId:cash_transfers', to_account_id: 'foreignId:bank_accounts', amount: 'decimal:18,2 default:0', note: 'string:255 nullable', timestamps: timestamps, relationships: { belongsTo: 'CashTransfer, BankAccount' } }
+    ChequeRegister: { id: uuid, branch_id: 'foreignId:branches', cheque_no: 'string:80 nullable index', coa_account_id: 'foreignId:coas nullable', bank_account_id: 'foreignId:bank_accounts nullable', contact_id: 'foreignId:contacts nullable', cheque_date: 'date nullable', received_date: 'date nullable', amount: 'decimal:18,2 default:0', status: 'enum:issued,received,cleared,bounced,cancelled default:received index', memo: 'string:255 nullable', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, COA, BankAccount, Contact' } }
+    JournalVoucher: { id: uuid, branch_id: 'foreignId:branches', voucher_no: 'string:50 nullable index', voucher_date: 'date index', narration: 'text nullable', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Branch } }
+    JournalVoucherItem: { id: uuid, journal_voucher_id: 'foreignId:journal_vouchers', account_id: 'foreignId:coas', dr_amount: 'decimal:18,2 default:0', cr_amount: 'decimal:18,2 default:0', line_note: 'string:255 nullable', timestamps: timestamps, relationships: { belongsTo: 'JournalVoucher, COA' } }
+    ProductCategory: { id: uuid, branch_id: 'foreignId:branches', name: 'string:150', parent_id: 'foreignId:product_categories nullable', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, ProductCategory' } }
+    UnitOfMeasurement: { id: uuid, branch_id: 'foreignId:branches', name: 'string:120', short_name: 'string:30', description: 'text nullable', accept_fraction: 'boolean default:false', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Branch } }
+    VariantAttribute: { id: uuid, branch_id: 'foreignId:branches', name: 'string:120', key: 'string:60 index', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    VariantAttributeOption: { id: uuid, branch_id: 'foreignId:branches', attribute_id: 'foreignId:variant_attributes', name: 'string:120', key: 'string:60 index', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: VariantAttribute } }
+    Product: { id: uuid, branch_id: 'foreignId:branches', type: 'enum:goods,service index', name: 'string:200', code: 'string:80 nullable index', category_id: 'foreignId:product_categories nullable', tax_class_id: 'foreignId:tax_classes nullable', primary_unit_id: 'foreignId:unit_of_measurements nullable', hs_code: 'string:40 nullable', ecommerce_enabled: 'boolean default:false', pos_enabled: 'boolean default:false', description: 'text nullable', selling_price: 'decimal:18,6 default:0', purchase_price: 'decimal:18,6 default:0', sales_account_id: 'foreignId:coas nullable', purchase_account_id: 'foreignId:coas nullable', purchase_return_account_id: 'foreignId:coas nullable', valuation_method: 'enum:fifo,weighted_average default:fifo', track_inventory: 'boolean default:true', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, ProductCategory, TaxClass, UnitOfMeasurement, COA' } }
+    ProductVariant: { id: uuid, branch_id: 'foreignId:branches', product_id: 'foreignId:products', sku: 'string:120 nullable index', name: 'string:200 nullable', option_summary: 'string:255 nullable', selling_price: 'decimal:18,6 default:0', purchase_price: 'decimal:18,6 default:0', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Product } }
+    ProductVariantOption: { id: uuid, product_variant_id: 'foreignId:product_variants', attribute_id: 'foreignId:variant_attributes', option_id: 'foreignId:variant_attribute_options', timestamps: timestamps, relationships: { belongsTo: 'ProductVariant, VariantAttribute, VariantAttributeOption' } }
+    ProductPicture: { id: uuid, branch_id: 'foreignId:branches', product_id: 'foreignId:products', image: 'string:255', is_main: 'boolean default:false', description: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Product } }
+    Warehouse: { id: uuid, branch_id: 'foreignId:branches', code: 'string:50 nullable index', name: 'string:150', address: 'text nullable', contact_phone: 'string:60 nullable', is_default: 'boolean default:false', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Branch } }
+    WarehouseTransfer: { id: uuid, branch_id: 'foreignId:branches', transfer_no: 'string:50 nullable index', transfer_date: 'date index', from_warehouse_id: 'foreignId:warehouses', to_warehouse_id: 'foreignId:warehouses', status: 'enum:draft,posted,void default:draft index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Warehouse } }
+    WarehouseTransferItem: { id: uuid, warehouse_transfer_id: 'foreignId:warehouse_transfers', product_variant_id: 'foreignId:product_variants', qty: 'decimal:18,6 default:0', note: 'string:255 nullable', timestamps: timestamps, relationships: { belongsTo: 'WarehouseTransfer, ProductVariant' } }
+    InventoryAdjustment: { id: uuid, branch_id: 'foreignId:branches', adjustment_no: 'string:50 nullable index', adjustment_date: 'date index', warehouse_id: 'foreignId:warehouses', reason: 'string:255 nullable', status: 'enum:draft,posted,void default:draft index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Warehouse } }
+    InventoryAdjustmentItem: { id: uuid, inventory_adjustment_id: 'foreignId:inventory_adjustments', product_variant_id: 'foreignId:product_variants', qty_change: 'decimal:18,6 default:0', unit_cost: 'decimal:18,6 default:0', note: 'string:255 nullable', timestamps: timestamps, relationships: { belongsTo: 'InventoryAdjustment, ProductVariant' } }
+    ProductionOrder: { id: uuid, branch_id: 'foreignId:branches', production_no: 'string:50 nullable index', production_date: 'date index', warehouse_id: 'foreignId:warehouses', status: 'enum:draft,in_progress,completed,void default:draft index', finished_good_variant_id: 'foreignId:product_variants', planned_qty: 'decimal:18,6 default:0', produced_qty: 'decimal:18,6 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Warehouse, ProductVariant' } }
+    ProductionInput: { id: uuid, production_order_id: 'foreignId:production_orders', raw_material_variant_id: 'foreignId:product_variants', qty_required: 'decimal:18,6 default:0', qty_consumed: 'decimal:18,6 default:0', timestamps: timestamps, relationships: { belongsTo: 'ProductionOrder, ProductVariant' } }
+    ProductionOutput: { id: uuid, production_order_id: 'foreignId:production_orders', finished_good_variant_id: 'foreignId:product_variants', qty_produced: 'decimal:18,6 default:0', timestamps: timestamps, relationships: { belongsTo: 'ProductionOrder, ProductVariant' } }
+    Quotation: { id: uuid, branch_id: 'foreignId:branches', quotation_no: 'string:50 nullable index', quotation_date: 'date index', customer_id: 'foreignId:contacts', valid_until: 'date nullable', currency_id: 'foreignId:currencies nullable', status: 'enum:draft,sent,accepted,rejected,expired default:draft index', subtotal: 'decimal:18,2 default:0', discount_total: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency' } }
+    QuotationItem: { id: uuid, quotation_id: 'foreignId:quotations', product_id: 'foreignId:products nullable', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Quotation, Product, TaxRate' } }
+    Sale: { id: uuid, branch_id: 'foreignId:branches', sale_no: 'string:50 nullable index', sale_date: 'date index', customer_id: 'foreignId:contacts', currency_id: 'foreignId:currencies nullable', status: 'enum:draft,confirmed,delivered,cancelled default:draft index', subtotal: 'decimal:18,2 default:0', discount_total: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency' } }
+    SaleItem: { id: uuid, sale_id: 'foreignId:sales', product_id: 'foreignId:products nullable', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Sale, Product, TaxRate' } }
+    Invoice: { id: uuid, branch_id: 'foreignId:branches', invoice_no: 'string:50 nullable index', invoice_date: 'date index', customer_id: 'foreignId:contacts', due_date: 'date nullable', currency_id: 'foreignId:currencies nullable', status: 'enum:draft,posted,partially_paid,paid,void default:draft index', subtotal: 'decimal:18,2 default:0', discount_total: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', balance_due: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency' } }
+    InvoiceItem: { id: uuid, invoice_id: 'foreignId:invoices', product_id: 'foreignId:products nullable', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Invoice, Product, TaxRate' } }
+    CustomerPayment: { id: uuid, branch_id: 'foreignId:branches', payment_no: 'string:50 nullable index', payment_date: 'date index', customer_id: 'foreignId:contacts', currency_id: 'foreignId:currencies nullable', amount: 'decimal:18,2 default:0', method: 'enum:cash,bank,cheque,online default:cash index', bank_account_id: 'foreignId:bank_accounts nullable', reference: 'string:100 nullable', status: 'enum:draft,posted,void default:draft index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency, BankAccount' } }
+    CustomerPaymentAllocation: { id: uuid, customer_payment_id: 'foreignId:customer_payments', invoice_id: 'foreignId:invoices', allocated_amount: 'decimal:18,2 default:0', note: 'string:255 nullable', timestamps: timestamps, relationships: { belongsTo: 'CustomerPayment, Invoice' } }
+    CreditNote: { id: uuid, branch_id: 'foreignId:branches', credit_note_no: 'string:50 nullable index', credit_note_date: 'date index', customer_id: 'foreignId:contacts', invoice_id: 'foreignId:invoices nullable', currency_id: 'foreignId:currencies nullable', reason: 'string:255 nullable', status: 'enum:draft,posted,void default:draft index', subtotal: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Invoice, Currency' } }
+    CreditNoteLine: { id: uuid, credit_note_id: 'foreignId:credit_notes', product_id: 'foreignId:products nullable', description: 'string:255 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'CreditNote, Product, TaxRate' } }
+    PurchaseOrder: { id: uuid, branch_id: 'foreignId:branches', po_no: 'string:50 nullable index', po_date: 'date index', supplier_id: 'foreignId:contacts', expected_date: 'date nullable', currency_id: 'foreignId:currencies nullable', status: 'enum:draft,sent,confirmed,received,cancelled default:draft index', subtotal: 'decimal:18,2 default:0', discount_total: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency' } }
+    PurchaseOrderLine: { id: uuid, purchase_order_id: 'foreignId:purchase_orders', product_id: 'foreignId:products nullable', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'PurchaseOrder, Product, TaxRate' } }
+    PurchaseBill: { id: uuid, branch_id: 'foreignId:branches', bill_no: 'string:50 nullable index', bill_date: 'date index', supplier_id: 'foreignId:contacts', due_date: 'date nullable', currency_id: 'foreignId:currencies nullable', status: 'enum:draft,posted,partially_paid,paid,void default:draft index', subtotal: 'decimal:18,2 default:0', discount_total: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', balance_due: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency' } }
+    PurchaseBillLine: { id: uuid, purchase_bill_id: 'foreignId:purchase_bills', product_id: 'foreignId:products nullable', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'PurchaseBill, Product, TaxRate' } }
+    Expense: { id: uuid, branch_id: 'foreignId:branches', expense_no: 'string:50 nullable index', expense_date: 'date index', supplier_id: 'foreignId:contacts nullable', currency_id: 'foreignId:currencies nullable', status: 'enum:draft,posted,void default:draft index', description: 'text nullable', grand_total: 'decimal:18,2 default:0', expense_account_id: 'foreignId:coas nullable', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency, COA' } }
+    ExpenseLine: { id: uuid, expense_id: 'foreignId:expenses', product_id: 'foreignId:products nullable', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Expense, Product, TaxRate' } }
+    SupplierPayment: { id: uuid, branch_id: 'foreignId:branches', payment_no: 'string:50 nullable index', payment_date: 'date index', supplier_id: 'foreignId:contacts', currency_id: 'foreignId:currencies nullable', amount: 'decimal:18,2 default:0', method: 'enum:cash,bank,cheque,online default:cash index', bank_account_id: 'foreignId:bank_accounts nullable', reference: 'string:100 nullable', status: 'enum:draft,posted,void default:draft index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, Currency, BankAccount' } }
+    SupplierPaymentLine: { id: uuid, supplier_payment_id: 'foreignId:supplier_payments', purchase_bill_id: 'foreignId:purchase_bills', allocated_amount: 'decimal:18,2 default:0', note: 'string:255 nullable', timestamps: timestamps, relationships: { belongsTo: 'SupplierPayment, PurchaseBill' } }
+    DebitNote: { id: uuid, branch_id: 'foreignId:branches', debit_note_no: 'string:50 nullable index', debit_note_date: 'date index', supplier_id: 'foreignId:contacts', purchase_bill_id: 'foreignId:purchase_bills nullable', currency_id: 'foreignId:currencies nullable', reason: 'string:255 nullable', status: 'enum:draft,posted,void default:draft index', subtotal: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Contact, PurchaseBill, Currency' } }
+    DebitNoteLine: { id: uuid, debit_note_id: 'foreignId:debit_notes', product_id: 'foreignId:products nullable', description: 'string:255 nullable', qty: 'decimal:18,6 default:1', rate: 'decimal:18,6 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'DebitNote, Product, TaxRate' } }
+    Store: { id: uuid, branch_id: 'foreignId:branches', name: 'string:150', domain: 'string:180 nullable', currency_id: 'foreignId:currencies nullable', tax_inclusive: 'boolean default:false', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, Currency' } }
+    CustomerProfile: { id: uuid, branch_id: 'foreignId:branches', user_id: 'foreignId:users nullable', contact_id: 'foreignId:contacts nullable', phone: 'string:60 nullable', dob: 'date nullable', notes: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Branch, User, Contact' } }
+    CustomerAddress: { id: uuid, branch_id: 'foreignId:branches', customer_profile_id: 'foreignId:customer_profiles', label: 'string:80 nullable', full_name: 'string:180', phone: 'string:60 nullable', address1: 'string:200', address2: 'string:200 nullable', city: 'string:80 nullable', state: 'string:80 nullable', country: 'string:80 nullable', postal_code: 'string:30 nullable', is_default: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: CustomerProfile } }
+    Cart: { id: uuid, branch_id: 'foreignId:branches', store_id: 'foreignId:stores', customer_profile_id: 'foreignId:customer_profiles nullable', session_key: 'string:120 nullable index', currency_id: 'foreignId:currencies nullable', subtotal: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Store, CustomerProfile, Currency' } }
+    CartItem: { id: uuid, cart_id: 'foreignId:carts', product_variant_id: 'foreignId:product_variants', qty: 'decimal:18,6 default:1', unit_price: 'decimal:18,6 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Cart, ProductVariant, TaxRate' } }
+    Order: { id: uuid, branch_id: 'foreignId:branches', store_id: 'foreignId:stores', order_no: 'string:60 nullable index', customer_profile_id: 'foreignId:customer_profiles nullable', customer_email: 'string:150 nullable', shipping_address_id: 'foreignId:customer_addresses nullable', billing_address_id: 'foreignId:customer_addresses nullable', currency_id: 'foreignId:currencies nullable', status: 'enum:pending,paid,processing,shipped,delivered,cancelled,refunded default:pending index', subtotal: 'decimal:18,2 default:0', discount_total: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', shipping_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Store, CustomerProfile, CustomerAddress, Currency' } }
+    OrderItem: { id: uuid, order_id: 'foreignId:orders', product_variant_id: 'foreignId:product_variants', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', unit_price: 'decimal:18,6 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Order, ProductVariant, TaxRate' } }
+    OrderStatusHistory: { id: uuid, order_id: 'foreignId:orders', from_status: 'string:50 nullable', to_status: 'string:50', changed_at: datetime, changed_by_id: 'foreignId:users nullable', note: 'string:255 nullable', timestamps: timestamps, relationships: { belongsTo: 'Order, User' } }
+    ShippingMethod: { id: uuid, branch_id: 'foreignId:branches', name: 'string:150', code: 'string:60 nullable index', description: 'text nullable', price: 'decimal:18,2 default:0', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    Shipment: { id: uuid, branch_id: 'foreignId:branches', shipment_no: 'string:60 nullable index', order_id: 'foreignId:orders', shipping_method_id: 'foreignId:shipping_methods nullable', tracking_no: 'string:120 nullable index', shipped_at: 'datetime nullable', delivered_at: 'datetime nullable', status: 'enum:packed,shipped,delivered,returned default:packed index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Order, ShippingMethod' } }
+    ShipmentItem: { id: uuid, shipment_id: 'foreignId:shipments', order_item_id: 'foreignId:order_items', qty: 'decimal:18,6 default:1', timestamps: timestamps, relationships: { belongsTo: 'Shipment, OrderItem' } }
+    OrderPayment: { id: uuid, branch_id: 'foreignId:branches', order_id: 'foreignId:orders', amount: 'decimal:18,2 default:0', currency_id: 'foreignId:currencies nullable', method: 'enum:card,bank,cod,wallet default:card index', status: 'enum:pending,success,failed,refunded default:pending index', reference: 'string:120 nullable', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Order, Currency' } }
+    PaymentGatewayTransaction: { id: uuid, branch_id: 'foreignId:branches', order_payment_id: 'foreignId:order_payments', gateway: 'string:80', transaction_id: 'string:150 index', request_payload: 'longtext nullable', response_payload: 'longtext nullable', status: 'string:50 nullable index', processed_at: 'datetime nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: OrderPayment } }
+    Coupon: { id: uuid, branch_id: 'foreignId:branches', code: 'string:40 unique', name: 'string:120', discount_type: 'enum:percent,fixed default:percent', discount_value: 'decimal:18,6 default:0', min_order_amount: 'decimal:18,2 default:0', max_uses: 'integer nullable', max_uses_per_customer: 'integer nullable', valid_from: 'datetime nullable', valid_to: 'datetime nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    CouponRedemption: { id: uuid, coupon_id: 'foreignId:coupons', customer_profile_id: 'foreignId:customer_profiles nullable', order_id: 'foreignId:orders nullable', redeemed_at: datetime, timestamps: timestamps, relationships: { belongsTo: 'Coupon, CustomerProfile, Order' } }
+    Refund: { id: uuid, branch_id: 'foreignId:branches', refund_no: 'string:60 nullable index', refund_date: 'date index', order_id: 'foreignId:orders', amount: 'decimal:18,2 default:0', reason: 'string:255 nullable', status: 'enum:draft,posted,void default:draft index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Order } }
+    RefundItem: { id: uuid, refund_id: 'foreignId:refunds', order_item_id: 'foreignId:order_items', qty: 'decimal:18,6 default:1', amount: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'Refund, OrderItem' } }
+    ReturnRequest: { id: uuid, branch_id: 'foreignId:branches', request_no: 'string:60 nullable index', request_date: 'date index', order_id: 'foreignId:orders', reason: 'string:255 nullable', status: 'enum:requested,approved,rejected,received,refunded default:requested index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: Order } }
+    ProductReview: { id: uuid, branch_id: 'foreignId:branches', store_id: 'foreignId:stores', product_id: 'foreignId:products', customer_profile_id: 'foreignId:customer_profiles nullable', rating: 'tinyInteger default:5', title: 'string:120 nullable', review: 'text nullable', is_approved: 'boolean default:false', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Store, Product, CustomerProfile' } }
+    POSRegister: { id: uuid, branch_id: 'foreignId:branches', code: 'string:40 nullable index', name: 'string:150', warehouse_id: 'foreignId:warehouses nullable', cash_account_id: 'foreignId:bank_accounts nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'Warehouse, BankAccount' } }
+    POSShift: { id: uuid, branch_id: 'foreignId:branches', register_id: 'foreignId:pos_registers', opened_at: datetime, opened_by_id: 'foreignId:users', closed_at: 'datetime nullable', closed_by_id: 'foreignId:users nullable', opening_cash: 'decimal:18,2 default:0', closing_cash: 'decimal:18,2 default:0', status: 'enum:open,closed default:open index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'POSRegister, User' } }
+    POSSession: { id: uuid, branch_id: 'foreignId:branches', shift_id: 'foreignId:pos_shifts', device_id: 'string:120 nullable index', started_at: datetime, ended_at: 'datetime nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: POSShift } }
+    POSCashMovement: { id: uuid, branch_id: 'foreignId:branches', shift_id: 'foreignId:pos_shifts', type: 'enum:in,out index', amount: 'decimal:18,2 default:0', reason: 'string:255 nullable', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: POSShift } }
+    POSPaymentMethod: { id: uuid, branch_id: 'foreignId:branches', name: 'string:120', type: 'enum:cash,card,bank,wallet,cod index', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    POSOrder: { id: uuid, branch_id: 'foreignId:branches', order_no: 'string:60 nullable index', order_date: 'datetime index', register_id: 'foreignId:pos_registers', shift_id: 'foreignId:pos_shifts', customer_id: 'foreignId:contacts nullable', status: 'enum:draft,posted,void default:draft index', subtotal: 'decimal:18,2 default:0', discount_total: 'decimal:18,2 default:0', tax_total: 'decimal:18,2 default:0', grand_total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'POSRegister, POSShift, Contact' } }
+    POSOrderItem: { id: uuid, pos_order_id: 'foreignId:pos_orders', product_variant_id: 'foreignId:product_variants', product_name: 'string:200 nullable', qty: 'decimal:18,6 default:1', unit_price: 'decimal:18,6 default:0', discount_amount: 'decimal:18,2 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'POSOrder, ProductVariant, TaxRate' } }
+    POSPayment: { id: uuid, branch_id: 'foreignId:branches', pos_order_id: 'foreignId:pos_orders', method_id: 'foreignId:pos_payment_methods', amount: 'decimal:18,2 default:0', reference: 'string:120 nullable', status: 'enum:posted,void default:posted index', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', total: 'decimal:18,2 default:0', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'POSOrder, POSPaymentMethod' } }
+    POSReceipt: { id: uuid, branch_id: 'foreignId:branches', pos_order_id: 'foreignId:pos_orders', receipt_no: 'string:60 nullable index', printed_at: 'datetime nullable', payload: 'longtext nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: POSOrder } }
+    POSReturn: { id: uuid, branch_id: 'foreignId:branches', return_no: 'string:60 nullable index', return_date: 'datetime index', pos_order_id: 'foreignId:pos_orders nullable', customer_id: 'foreignId:contacts nullable', reason: 'string:255 nullable', status: 'enum:draft,posted,void default:draft index', total: 'decimal:18,2 default:0', approved: 'boolean default:false', approved_at: 'datetime nullable', approved_by_id: 'foreignId:users nullable', voided_reason: 'string:255 nullable', voided_at: 'datetime nullable', exchange_rate: 'decimal:18,6 default:1', note: 'text nullable', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: 'POSOrder, Contact' } }
+    POSReturnItem: { id: uuid, pos_return_id: 'foreignId:pos_returns', pos_order_item_id: 'foreignId:pos_order_items nullable', product_variant_id: 'foreignId:product_variants', qty: 'decimal:18,6 default:1', unit_price: 'decimal:18,6 default:0', tax_rate_id: 'foreignId:tax_rates nullable', line_total: 'decimal:18,2 default:0', timestamps: timestamps, relationships: { belongsTo: 'POSReturn, POSOrderItem, ProductVariant, TaxRate' } }
+    POSDiscountProfile: { id: uuid, branch_id: 'foreignId:branches', name: 'string:120', discount_type: 'enum:percent,fixed default:percent', value: 'decimal:18,6 default:0', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps }
+    POSTaxProfile: { id: uuid, branch_id: 'foreignId:branches', name: 'string:120', tax_rate_id: 'foreignId:tax_rates', user_add_id: 'foreignId:users nullable', active: 'boolean default:true', is_system_generated: 'boolean default:false', timestamps: timestamps, relationships: { belongsTo: TaxRate } }
