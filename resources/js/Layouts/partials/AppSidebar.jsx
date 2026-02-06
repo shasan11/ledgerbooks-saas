@@ -177,6 +177,7 @@ export default function AppSidebar({
       com_dispute: "/commission/disputes",
 
       // Others
+      branches: "/branches",
       reports: "/reports",
       settings: "/settings",
     };
@@ -305,6 +306,7 @@ export default function AppSidebar({
       },
 
       { key: "reports", icon: <BarChartOutlined />, title: "Reports", label: L("reports", "Reports") },
+      { key: "branches", icon: <ApartmentOutlined />, title: "Branches", label: L("branches", "Branches") },
       { key: "settings", icon: <SettingOutlined />, title: "Settings", label: L("settings", "Settings") },
     ];
 
