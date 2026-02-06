@@ -4,7 +4,7 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
-export default function Edit({ mustVerifyEmail, status, branches, canChangeBranch }) {
+export default function Edit({ mustVerifyEmail, status, branches }) {
     return (
         <AuthenticatedLayout
             header={
@@ -22,7 +22,6 @@ export default function Edit({ mustVerifyEmail, status, branches, canChangeBranc
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
                             branches={branches}
-                            canChangeBranch={canChangeBranch}
                             className="max-w-xl"
                         />
                     </div>
