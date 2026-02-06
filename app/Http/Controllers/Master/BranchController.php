@@ -15,9 +15,10 @@ class BranchController extends Controller
         $q = trim((string) $request->query('q', ''));
         $sort = $request->query('sort', 'created_at');
         $dir = strtolower($request->query('dir', 'desc')) === 'asc' ? 'asc' : 'desc';
+        $perPage = (int) $request->query('per_page', 15);
+        $page = (int) $request->query('page', 1);
 
         $filters = [
-            'active' => $request->query('active'), // 1/0/null
             'is_head_office' => $request->query('is_head_office'),
             'country' => $request->query('country'),
             'city' => $request->query('city'),
@@ -40,9 +41,6 @@ class BranchController extends Controller
         }
 
         // Filters
-        if ($filters['active'] !== null && $filters['active'] !== '') {
-            $query->where('active', (bool) ((int) $filters['active']));
-        }
         if ($filters['is_head_office'] !== null && $filters['is_head_office'] !== '') {
             $query->where('is_head_office', (bool) ((int) $filters['is_head_office']));
         }
@@ -60,20 +58,43 @@ class BranchController extends Controller
             $sort = 'created_at';
         }
 
-        $branches = $query
+        $items = (clone $query)
+            ->where('active', 1)
             ->orderBy($sort, $dir)
-            ->paginate((int) $request->query('per_page', 15))
+            ->paginate($perPage, ['*'], 'page', $page)
             ->withQueryString();
 
+        $inactiveItems = null;
+        $inactiveDrawer = (int) $request->query('inactive_drawer', 0) === 1;
+
+        if ($inactiveDrawer) {
+            $inactiveSearch = trim((string) $request->query('inactive_search', ''));
+            $inactivePage = (int) $request->query('inactive_page', 1);
+            $inactivePerPage = (int) $request->query('inactive_per_page', 10);
+
+            $inactiveQuery = (clone $query)->where('active', 0);
+
+            if ($inactiveSearch !== '') {
+                $inactiveQuery->where(function ($qq) use ($inactiveSearch) {
+                    $qq->where('name', 'like', "%{$inactiveSearch}%")
+                       ->orWhere('code', 'like', "%{$inactiveSearch}%")
+                       ->orWhere('email', 'like', "%{$inactiveSearch}%")
+                       ->orWhere('phone', 'like', "%{$inactiveSearch}%")
+                       ->orWhere('country', 'like', "%{$inactiveSearch}%")
+                       ->orWhere('city', 'like', "%{$inactiveSearch}%");
+                });
+            }
+
+            $inactiveItems = $inactiveQuery
+                ->orderBy($sort, $dir)
+                ->paginate($inactivePerPage, ['*'], 'inactive_page', $inactivePage)
+                ->withQueryString();
+        }
+
         return Inertia::render('Branches/Index', [
-            'branches' => $branches,
-            'query' => [
-                'q' => $q,
-                'sort' => $sort,
-                'dir' => $dir,
-                'per_page' => (int) $request->query('per_page', 15),
-                ...$filters,
-            ],
+            'items' => $items,
+            'inactiveItems' => $inactiveItems,
+            'query' => $request->all(),
             'meta' => [
                 'countries' => Branch::query()->whereNotNull('country')->distinct()->orderBy('country')->pluck('country'),
                 'cities' => Branch::query()->whereNotNull('city')->distinct()->orderBy('city')->pluck('city'),
@@ -104,6 +125,70 @@ class BranchController extends Controller
     {
         $branch->delete();
         return back()->with('success', 'Branch deleted.');
+    }
+
+    public function bulk(Request $request)
+    {
+        $op = (string) $request->input('op', '');
+
+        if ($op === 'inactivate') {
+            $payload = $request->validate([
+                'ids' => ['required', 'array'],
+                'ids.*' => ['required', 'uuid', 'exists:branches,id'],
+            ]);
+
+            Branch::whereIn('id', $payload['ids'])->update(['active' => 0]);
+
+            return back()->with('success', 'Branches marked inactive.');
+        }
+
+        if ($op === 'activate') {
+            $payload = $request->validate([
+                'ids' => ['required', 'array'],
+                'ids.*' => ['required', 'uuid', 'exists:branches,id'],
+            ]);
+
+            Branch::whereIn('id', $payload['ids'])->update(['active' => 1]);
+
+            return back()->with('success', 'Branches marked active.');
+        }
+
+        if ($op === 'import') {
+            $payload = $request->validate([
+                'rows' => ['required', 'array'],
+            ]);
+
+            $rows = collect($payload['rows'])->map(function ($row) {
+                $name = trim((string) ($row['name'] ?? $row['Name'] ?? ''));
+                if ($name === '') {
+                    return null;
+                }
+
+                return [
+                    'code' => $row['code'] ?? $row['Code'] ?? null,
+                    'name' => $name,
+                    'email' => $row['email'] ?? $row['Email'] ?? null,
+                    'phone' => $row['phone'] ?? $row['Phone'] ?? null,
+                    'address' => $row['address'] ?? $row['Address'] ?? null,
+                    'country' => $row['country'] ?? $row['Country'] ?? null,
+                    'city' => $row['city'] ?? $row['City'] ?? null,
+                    'timezone' => $row['timezone'] ?? $row['Timezone'] ?? null,
+                    'currency_id' => $row['currency_id'] ?? $row['Currency ID'] ?? null,
+                    'is_head_office' => (bool) ($row['is_head_office'] ?? $row['Head Office'] ?? false),
+                    'active' => isset($row['active']) ? (bool) $row['active'] : true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            })->filter()->all();
+
+            if (!empty($rows)) {
+                Branch::insert($rows);
+            }
+
+            return back()->with('success', 'Branches imported.');
+        }
+
+        abort(400, 'Unknown bulk op');
     }
 
     // ---------- BULK ----------
