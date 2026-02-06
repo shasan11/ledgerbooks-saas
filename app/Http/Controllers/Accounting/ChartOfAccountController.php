@@ -16,6 +16,11 @@ class ChartOfAccountController extends Controller
     {
         $user = $request->user();
         $branchId = $user->branch_id ?? null;
+        $branchId = $branchId !== null ? (int) $branchId : null;
+
+        if ($branchId !== null) {
+            CoaSeeder::seedForBranch($branchId, $user->id);
+        }
 
         if ($branchId !== null) {
             CoaSeeder::seedForBranch($branchId, $user->id);
