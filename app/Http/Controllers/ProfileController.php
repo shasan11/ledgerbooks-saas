@@ -21,17 +21,11 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        // Only send branch list if user is allowed to change it
-        $canChangeBranch = $user->can('change branch');
-
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
             'user' => $user->only(['name', 'email', 'branch_id']),
-            'canChangeBranch' => $canChangeBranch,
-            'branches' => $canChangeBranch
-                ? Branch::select('id', 'name')->orderBy('name')->get()
-                : [],
+            'branches' => Branch::select('id', 'name')->orderBy('name')->get(),
         ]);
     }
 
@@ -42,7 +36,7 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        // Fill only validated fields (rules decide whether branch_id is allowed)
+        // Fill only validated fields.
         $user->fill($request->validated());
 
         if ($user->isDirty('email')) {

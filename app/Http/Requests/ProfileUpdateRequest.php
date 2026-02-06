@@ -10,7 +10,6 @@ class ProfileUpdateRequest extends FormRequest
     public function authorize(): bool
     {
         // Everyone can update their own profile.
-        // Branch changes are controlled in rules() (permission-gated).
         return true;
     }
 
@@ -30,10 +29,7 @@ class ProfileUpdateRequest extends FormRequest
             ],
         ];
 
-        // Only allow branch change if user has permission
-        if ($user && $user->can('change branch')) {
-            $rules['branch_id'] = ['required', 'integer', 'exists:branches,id'];
-        }
+        $rules['branch_id'] = ['required', 'uuid', 'exists:branches,id'];
 
         return $rules;
     }
