@@ -9,7 +9,7 @@ use App\Models\PurchaseAccount;
 use App\Models\PurchaseReturnAccount;
 use App\Models\SalesAccount;
 use App\Models\TaxClass;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -40,7 +40,7 @@ class ProductFactory extends Factory
             'purchase_return_account_id' => PurchaseReturnAccount::factory(),
             'sales_account_id' => SalesAccount::factory(),
             'tax_class_id' => TaxClass::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
             'category_id' => Category::factory(),
             'primary_unit_id' => PrimaryUnit::factory(),
         ];

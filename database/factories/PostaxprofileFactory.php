@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Branch;
 use App\Models\TaxRate;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PostaxprofileFactory extends Factory
@@ -22,7 +22,7 @@ class PostaxprofileFactory extends Factory
             'name' => fake()->name(),
             'branch_id' => Branch::factory(),
             'tax_rate_id' => TaxRate::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\TaxClass;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TaxrateFactory extends Factory
@@ -24,7 +24,7 @@ class TaxrateFactory extends Factory
             'active_from' => fake()->word(),
             'active_to' => fake()->word(),
             'tax_class_id' => TaxClass::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

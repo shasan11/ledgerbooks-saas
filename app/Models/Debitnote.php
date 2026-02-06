@@ -68,7 +68,7 @@ class Debitnote extends Model
 
     public function approvedBy(): BelongsTo
     {
-        return $this->belongsTo(ApprovedBy::class);
+        return $this->belongsTo(User::class);
     }
 
     public function branch(): BelongsTo
@@ -88,7 +88,7 @@ class Debitnote extends Model
 
     public function userAdd(): BelongsTo
     {
-        return $this->belongsTo(UserAdd::class);
+        return $this->belongsTo(User::class);
     }
 
     public function purchaseBill(): BelongsTo

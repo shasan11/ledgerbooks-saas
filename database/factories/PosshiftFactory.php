@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\ApprovedBy;
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\ClosedBy;
 use App\Models\OpenedBy;
 use App\Models\Register;
-use App\Models\UserAdd;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PosshiftFactory extends Factory
@@ -34,12 +33,12 @@ class PosshiftFactory extends Factory
             'status' => fake()->regexify('[A-Za-z0-9]{10}'),
             'total' => fake()->randomFloat(6, 0, 999999999999.999999),
             'note' => fake()->word(),
-            'approved_by_id' => ApprovedBy::factory(),
+            'approved_by_id' => User::factory(),
             'branch_id' => Branch::factory(),
             'closed_by_id' => ClosedBy::factory(),
             'opened_by_id' => OpenedBy::factory(),
             'register_id' => Register::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

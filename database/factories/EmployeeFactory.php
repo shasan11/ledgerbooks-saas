@@ -6,7 +6,6 @@ use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\User;
-use App\Models\UserAdd;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EmployeeFactory extends Factory
@@ -35,7 +34,7 @@ class EmployeeFactory extends Factory
             'department_id' => Department::factory(),
             'designation_id' => Designation::factory(),
             'user_id' => User::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

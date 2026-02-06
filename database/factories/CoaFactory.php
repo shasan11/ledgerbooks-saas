@@ -4,8 +4,7 @@ namespace Database\Factories;
 
 use App\Models\AccountType;
 use App\Models\Branch;
-use App\Models\Parent;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CoaFactory extends Factory
@@ -27,8 +26,8 @@ class CoaFactory extends Factory
             'is_system' => fake()->boolean(),
             'account_type_id' => AccountType::factory(),
             'branch_id' => Branch::factory(),
-            'parent_id' => Parent::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'parent_id' => null,
+            'user_add_id' => User::factory(),
         ];
     }
 }

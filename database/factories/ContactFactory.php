@@ -6,7 +6,7 @@ use App\Models\Branch;
 use App\Models\Group;
 use App\Models\PayableAccount;
 use App\Models\ReceivableAccount;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ContactFactory extends Factory
@@ -35,7 +35,7 @@ class ContactFactory extends Factory
             'branch_id' => Branch::factory(),
             'payable_account_id' => PayableAccount::factory(),
             'receivable_account_id' => ReceivableAccount::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
             'group_id' => Group::factory(),
         ];
     }

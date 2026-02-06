@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\ApprovedBy;
+use App\Models\User;
 use App\Models\Branch;
-use App\Models\UserAdd;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class JournalvoucherFactory extends Factory
@@ -29,9 +28,9 @@ class JournalvoucherFactory extends Factory
             'narration' => fake()->word(),
             'total' => fake()->randomFloat(6, 0, 999999999999.999999),
             'note' => fake()->word(),
-            'approved_by_id' => ApprovedBy::factory(),
+            'approved_by_id' => User::factory(),
             'branch_id' => Branch::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

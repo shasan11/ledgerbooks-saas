@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\ApprovedBy;
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\PosOrder;
-use App\Models\UserAdd;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PosreturnFactory extends Factory
@@ -32,11 +31,11 @@ class PosreturnFactory extends Factory
             'status' => fake()->regexify('[A-Za-z0-9]{10}'),
             'total' => fake()->randomFloat(6, 0, 999999999999.999999),
             'note' => fake()->word(),
-            'approved_by_id' => ApprovedBy::factory(),
+            'approved_by_id' => User::factory(),
             'branch_id' => Branch::factory(),
             'customer_id' => Customer::factory(),
             'pos_order_id' => PosOrder::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

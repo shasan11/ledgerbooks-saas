@@ -6,7 +6,7 @@ use App\Models\Branch;
 use App\Models\Contact;
 use App\Models\Currency;
 use App\Models\Owner;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DealFactory extends Factory
@@ -33,7 +33,7 @@ class DealFactory extends Factory
             'contact_id' => Contact::factory(),
             'currency_id' => Currency::factory(),
             'owner_id' => Owner::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

@@ -3,8 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Branch;
-use App\Models\Parent;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductcategoryFactory extends Factory
@@ -22,8 +21,8 @@ class ProductcategoryFactory extends Factory
             'name' => fake()->name(),
             'description' => fake()->text(),
             'branch_id' => Branch::factory(),
-            'parent_id' => Parent::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'parent_id' => null,
+            'user_add_id' => User::factory(),
         ];
     }
 }

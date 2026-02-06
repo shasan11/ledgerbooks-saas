@@ -61,11 +61,11 @@ class Coa extends Model
 
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Parent::class);
+        return $this->belongsTo(self::class, "parent_id");
     }
 
     public function userAdd(): BelongsTo
     {
-        return $this->belongsTo(UserAdd::class);
+        return $this->belongsTo(User::class);
     }
 }

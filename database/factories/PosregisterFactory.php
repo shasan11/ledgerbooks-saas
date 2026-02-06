@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Branch;
 use App\Models\CashAccount;
-use App\Models\UserAdd;
+use App\Models\User;
 use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +24,7 @@ class PosregisterFactory extends Factory
             'name' => fake()->name(),
             'branch_id' => Branch::factory(),
             'cash_account_id' => CashAccount::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
             'warehouse_id' => Warehouse::factory(),
         ];
     }

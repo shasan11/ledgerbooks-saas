@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Branch;
 use App\Models\Product;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductpictureFactory extends Factory
@@ -24,7 +24,7 @@ class ProductpictureFactory extends Factory
             'description' => fake()->text(),
             'branch_id' => Branch::factory(),
             'product_id' => Product::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

@@ -53,7 +53,7 @@ class Possession extends Model
 
     public function userAdd(): BelongsTo
     {
-        return $this->belongsTo(UserAdd::class);
+        return $this->belongsTo(User::class);
     }
 
     public function shift(): BelongsTo

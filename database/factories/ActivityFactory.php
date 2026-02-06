@@ -6,7 +6,7 @@ use App\Models\AssignedTo;
 use App\Models\Branch;
 use App\Models\Contact;
 use App\Models\Deal;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ActivityFactory extends Factory
@@ -29,7 +29,7 @@ class ActivityFactory extends Factory
             'description' => fake()->text(),
             'assigned_to_id' => AssignedTo::factory(),
             'branch_id' => Branch::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
             'contact_id' => Contact::factory(),
             'deal_id' => Deal::factory(),
         ];

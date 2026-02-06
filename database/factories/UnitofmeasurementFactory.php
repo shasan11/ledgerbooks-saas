@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Branch;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UnitofmeasurementFactory extends Factory
@@ -23,7 +23,7 @@ class UnitofmeasurementFactory extends Factory
             'description' => fake()->text(),
             'accept_fraction' => fake()->boolean(),
             'branch_id' => Branch::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

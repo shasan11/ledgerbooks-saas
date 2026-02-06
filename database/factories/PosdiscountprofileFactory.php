@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Branch;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PosdiscountprofileFactory extends Factory
@@ -22,7 +22,7 @@ class PosdiscountprofileFactory extends Factory
             'discount_type' => fake()->regexify('[A-Za-z0-9]{10}'),
             'value' => fake()->randomFloat(6, 0, 999999999999.999999),
             'branch_id' => Branch::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

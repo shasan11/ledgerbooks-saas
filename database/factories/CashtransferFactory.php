@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\ApprovedBy;
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\FromAccount;
-use App\Models\UserAdd;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CashtransferFactory extends Factory
@@ -30,10 +29,10 @@ class CashtransferFactory extends Factory
             'reference_no' => fake()->regexify('[A-Za-z0-9]{80}'),
             'total' => fake()->randomFloat(6, 0, 999999999999.999999),
             'note' => fake()->word(),
-            'approved_by_id' => ApprovedBy::factory(),
+            'approved_by_id' => User::factory(),
             'branch_id' => Branch::factory(),
             'from_account_id' => FromAccount::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }

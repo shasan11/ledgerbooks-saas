@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Branch;
-use App\Models\UserAdd;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SalarycomponentFactory extends Factory
@@ -24,7 +24,7 @@ class SalarycomponentFactory extends Factory
             'taxable' => fake()->boolean(),
             'description' => fake()->text(),
             'branch_id' => Branch::factory(),
-            'user_add_id' => UserAdd::factory(),
+            'user_add_id' => User::factory(),
         ];
     }
 }
