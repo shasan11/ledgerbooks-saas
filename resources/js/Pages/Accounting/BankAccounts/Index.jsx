@@ -14,8 +14,37 @@ const accountTypeOptions = [
   { value: "current", label: "Current" },
 ];
 
+const CODE_PREFIXES = {
+  bank: "BA",
+  cash: "BC",
+};
+
+const CODE_PADDING = 5;
+
+const buildNextCode = (type, rows) => {
+  const prefix = CODE_PREFIXES[type];
+  if (!prefix) return "";
+
+  const matcher = new RegExp(`^${prefix}(\\d+)$`, "i");
+  const maxValue = (rows || []).reduce((max, row) => {
+    const code = row?.code || "";
+    const match = code.match(matcher);
+    if (!match) return max;
+    const value = Number(match[1]);
+    if (!Number.isFinite(value)) return max;
+    return Math.max(max, value);
+  }, 0);
+
+  return `${prefix}${String(maxValue + 1).padStart(CODE_PADDING, "0")}`;
+};
+
 export default function Index() {
-  const { items, inactiveItems, currencies = [], chartOfAccounts = [] } = usePage().props;
+  const { items, inactiveItems, currencies = [] } = usePage().props;
+
+  const allRows = useMemo(
+    () => [...(items?.data || []), ...(inactiveItems?.data || [])],
+    [items?.data, inactiveItems?.data]
+  );
 
   const currencyOptions = useMemo(
     () =>
@@ -24,24 +53,6 @@ export default function Index() {
         label: `${currency.code} - ${currency.name}`,
       })),
     [currencies]
-  );
-
-  const chartOptions = useMemo(
-    () =>
-      chartOfAccounts.map((account) => ({
-        value: account.id,
-        label: account.code ? `${account.code} - ${account.name}` : account.name,
-      })),
-    [chartOfAccounts]
-  );
-
-  const chartIdOptions = useMemo(
-    () =>
-      chartOfAccounts.map((account) => ({
-        value: account.c_o_a_id ?? account.id,
-        label: account.code ? `${account.code} - ${account.name}` : account.name,
-      })),
-    [chartOfAccounts]
   );
 
   return (
@@ -61,14 +72,46 @@ export default function Index() {
         fields={[
           { type: "select", name: "type", label: "Type", options: typeOptions, required: true, col: 12 },
           { type: "text", name: "display_name", label: "Display Name", required: true, col: 12 },
-          { type: "text", name: "bank_name", label: "Bank Name", col: 12 },
-          { type: "text", name: "code", label: "Code", col: 12 },
-          { type: "text", name: "account_name", label: "Account Name", col: 12 },
-          { type: "text", name: "account_number", label: "Account Number", col: 12 },
-          { type: "select", name: "account_type", label: "Account Type", options: accountTypeOptions, col: 12 },
+          {
+            type: "text",
+            name: "bank_name",
+            label: "Bank Name",
+            col: 12,
+            condition: (values) => values?.type === "bank",
+          },
+          {
+            type: "text",
+            name: "code",
+            label: "Code",
+            col: 12,
+            readOnly: true,
+            condition: (values) => values?.type === "bank",
+            formula: (values) =>
+              values?.code || buildNextCode(values?.type, allRows),
+          },
+          {
+            type: "text",
+            name: "account_name",
+            label: "Account Name",
+            col: 12,
+            condition: (values) => values?.type === "bank",
+          },
+          {
+            type: "text",
+            name: "account_number",
+            label: "Account Number",
+            col: 12,
+            condition: (values) => values?.type === "bank",
+          },
+          {
+            type: "select",
+            name: "account_type",
+            label: "Account Type",
+            options: accountTypeOptions,
+            col: 12,
+            condition: (values) => values?.type === "bank",
+          },
           { type: "select", name: "currency_id", label: "Currency", options: currencyOptions, col: 12 },
-          { type: "select", name: "coa_account_id", label: "COA Account", options: chartOptions, col: 12 },
-          { type: "select", name: "c_o_a_id", label: "COA", options: chartIdOptions, col: 12 },
           { type: "textarea", name: "description", label: "Description", col: 24 },
         ]}
         validationSchema={Yup.object({
